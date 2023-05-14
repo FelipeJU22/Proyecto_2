@@ -53,8 +53,12 @@ struct Coord {
     int col;
 };
 
+// Vector para almacenar la ruta más rápida
+std::vector<std::pair<int, int>> fastest_route;
+std::vector<std::pair<int, int>> mover;
 
-static string matriz1[12][21] = {
+
+static string matriz1[ROWS][COLS] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"},
         {"#","0","0","0","0","#","0","0","0","0","0","0","0","0","0","#","0","0","0","0","#"},
         {"#","0","#","#","0","#","0","#","#","#","#","#","#","#","0","#","0","#","#","0","#"},
@@ -317,52 +321,52 @@ static int puntos3 = 0;
 static int puntaje4 = 0;
 static int puntos4 = 0;
 
-bool isValid(int row, int col) {
-    return row >= 0 && row < ROWS && col >= 0 && col < COLS;
-}
-// Función que realiza la búsqueda de profundidad primero (DFS).
-bool dfs(vector<Coord>& path, int currRow, int currCol, int destRow, int destCol) {
-    // Si alcanzamos el destino, agregamos la coordenada a la ruta y retornamos verdadero.
-    if (currRow == destRow && currCol == destCol) {
-        path.push_back({currRow, currCol});
-        return true;
-    }
-
-    // Marcamos la coordenada actual como visitada.
-    //matriz1[currRow][currCol] = 2;
-
-    // Verificamos cada posible dirección.
-    int dr[] = {1, 0, -1, 0};
-    int dc[] = {0, 1, 0, -1};
-    for (int i = 0; i < 4; i++) {
-        int newRow = currRow + dr[i];
-        int newCol = currCol + dc[i];
-        if (isValid(newRow, newCol) && matriz1[newRow][newCol] == "0") {
-            if (dfs(path, newRow, newCol, destRow, destCol)) {
-                // Si encontramos el destino, agregamos la coordenada actual a la ruta y retornamos verdadero.
-                path.push_back({currRow, currCol});
-                return true;
-            }
+// Función para encontrar la ruta más rápida utilizando backtracking
+void backtrack(int row, int col, std::vector<std::pair<int, int>>& route) {
+    // Si se llegó al punto de destino, comprobar si esta es la ruta más rápida
+    //if (row == end_row && col == end_col)
+    if (row == posMy && col == posMx) {
+        if (fastest_route.empty() || route.size() < fastest_route.size()) {
+            fastest_route = route;
+            mover = route;
         }
+        return;
     }
 
-    // Si no encontramos el destino, removemos la coordenada actual de la ruta y retornamos falso.
-    path.pop_back();
-    return false;
-}
-// Función principal que llama a la búsqueda de profundidad primero (DFS) e imprime la ruta encontrada.
-void findPath(int startRow, int startCol, int destRow, int destCol) {
-    vector<Coord> path;
-    if (dfs(path, startRow, startCol, destRow, destCol)) {
-        cout << "Ruta encontrada:" << endl;
-        for (int i = path.size() - 1; i >= 0; i--) {
-            cout << "(" << path[i].row << ", " << path[i].col << ")" << endl;
-        }
-    } else {
-        cout << "No se encontró una ruta." << endl;
-    }
-}
+    // Marcamos la casilla actual como visitada
+    matriz1[row][col] = "V";
 
+    // Movimiento hacia arriba
+    if (row > 0 && matriz1[row-1][col] != "#" && matriz1[row-1][col] != "V") {
+        route.push_back(std::make_pair(row-1, col));
+        backtrack(row-1, col, route);
+        route.pop_back();
+    }
+
+    // Movimiento hacia abajo
+    if (row < ROWS-1 && matriz1[row+1][col] != "#" && matriz1[row+1][col] != "V") {
+        route.push_back(std::make_pair(row+1, col));
+        backtrack(row+1, col, route);
+        route.pop_back();
+    }
+
+    // Movimiento hacia la izquierda
+    if (col > 0 && matriz1[row][col-1] != "#" && matriz1[row][col-1] != "V") {
+        route.push_back(std::make_pair(row, col-1));
+        backtrack(row, col-1, route);
+        route.pop_back();
+    }
+
+    // Movimiento hacia la derecha
+    if (col < COLS-1 && matriz1[row][col+1] != "#" && matriz1[row][col+1] != "V") {
+        route.push_back(std::make_pair(row, col+1));
+        backtrack(row, col+1, route);
+        route.pop_back();
+    }
+
+    // Desmarcamos la casilla actual como visitada
+    matriz1[row][col] = "0";
+}
 void juego(void){
     posJugx = 460;
     posJugy = 416;
@@ -416,6 +420,15 @@ void actJuego1(void){
             posJugy -= jugador1.velocidad.y;
             //matriz1[posMy][posMx] = "0";
             posMy--;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+            fastest_route.clear();
+            route.clear();
+
             //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_UP)) player = personajeU;
@@ -434,6 +447,16 @@ void actJuego1(void){
             posJugy += jugador1.velocidad.y;
             //matriz1[posMy][posMx] = "0";
             posMy++;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
+
 
             //matriz1[posMy][posMx] = "1";
         }
@@ -454,6 +477,15 @@ void actJuego1(void){
             posJugx -= jugador1.velocidad.x;
             //matriz1[posMy][posMx] = "0";
             posMx--;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
 
             //matriz1[posMy][posMx] = "1";
         }
@@ -473,6 +505,15 @@ void actJuego1(void){
             posJugx += jugador1.velocidad.x;
             //matriz1[posMy][posMx] = "0";
             posMx++;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
 
             //matriz1[posMy][posMx] = "1";
         }
@@ -499,6 +540,26 @@ void actJuego1(void){
     }
 
     if (delayTimer >=delayTimerMax){
+        if (!mover.empty()){
+            if (mover[1].first < enemigo1.mEney){
+                enemigo1.posEney -= enemigo1.velene.y;
+                enemigo1.mEney--;
+            }
+            if (mover[1].first > enemigo1.mEney){
+                enemigo1.posEney += enemigo1.velene.y;
+                enemigo1.mEney++;
+            }
+            if (mover[1].second < enemigo1.mEnex) {
+                enemigo1.posEnex -= enemigo1.velene.x;
+                enemigo1.mEnex--;
+            }
+            if (mover[1].second > enemigo1.mEnex) {
+                enemigo1.posEnex += enemigo1.velene.x;
+                enemigo1.mEnex++;
+            }
+            mover.erase(mover.begin());
+        }
+        //En caso de que queramos mover el pacman de manera aleatoria
         /**
         if (random_number == 0){
             if(matriz1[enemigo1.mEney-1][enemigo1.mEnex] != "#"){
