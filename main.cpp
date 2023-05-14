@@ -74,7 +74,8 @@ static string matriz3[12][21] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}
 };
 
-static string matriz4[12][21] = {
+static string matriz4[14][21] = {
+        {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"},
         {"#","0","#","#","0","#","0","#","#","#","#","#","#","#","0","#","0","#","#","0","#"},
         {"#","0","0","0","0","#","0","0","0","0","#","0","0","0","0","#","0","0","0","0","#"},
         {"#","#","#","#","0","#","#","#","0","0","#","0","0","#","#","#","0","#","#","#","#"},
@@ -86,7 +87,8 @@ static string matriz4[12][21] = {
         {"#","#","#","#","0","#","0","0","0","0","0","0","0","0","0","#","0","#","#","#","#"},
         {"#","0","0","0","0","0","0","0","#","#","#","#","#","0","0","0","0","0","0","0","#"},
         {"#","0","#","0","#","#","#","0","0","0","#","0","0","0","#","#","#","0","0","0","#"},
-        {"#","0","#","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","#"}
+        {"#","0","#","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","#"},
+        {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}
 };
 
 
@@ -99,11 +101,19 @@ static Enemigos enemigo1 = { 0 };
 static int cont1 = 0;
 static int cont2 = 0;
 
-static Pastillas pastillas1[116] = {0};
+
+static const int cantP1 = 116;
+static const int cantP2 = 121;
+static const int cantP3 = 102;
+static const int cantP4 = 130;
+static Pastillas pastillas1[cantP1] = {0};
+static Pastillas pastillas2[cantP2] = {0};
+static Pastillas pastillas3[cantP3] = {0};
+static Pastillas pastillas4[cantP4] = {0};
 /**
  * Posiciones pastillas
  */
-static int posicionxP1[116] = {64,64,64,64,64,64,64,64,64,64,
+static int posicionxP1[cantP1] = {64,64,64,64,64,64,64,64,64,64,
                                110,110,110,
                                156,156,156,156,156,156,156,156,156,
                                202,202,202,202,202,202,202,
@@ -123,7 +133,7 @@ static int posicionxP1[116] = {64,64,64,64,64,64,64,64,64,64,
                                846,846,846,
                                892,892,892,892,892,892,892,892,892,892};
 
-static int posicionyP1[116] = {64,110,156,202,248,294,340,386,432,478,
+static int posicionyP1[cantP1] = {64,110,156,202,248,294,340,386,432,478,
                                64,248,478,
                                64,156,202,248,294,340,386,432,478,
                                64,110,156,202,294,386,478,
@@ -143,18 +153,18 @@ static int posicionyP1[116] = {64,110,156,202,248,294,340,386,432,478,
                                64,248,478,
                                64,110,156,202,248,294,340,386,432,478};
 
-static int posicionxP2[127] = {64,64,64,64,64,64,64,64,64,64,
+static int posicionxP2[cantP2] = {64,64,64,64,64,64,64,64,64,64,
                                110,110,110,
                                156,156,156,156,156,156,156,156,156,
                                202,202,202,202,
                                248,248,248,248,248,248,248,248,248,248,
                                294,294,294,
                                340,340,340,340,340,340,340,340,340,340,
-                               386,386,386,386,386,
-                               432,432,432,432,432,432,432,432,
-                               478,478,478,
-                               524,524,524,524,524,524,524,524,
-                               570,570,570,570,570,
+                               386,386,386,386,
+                               432,432,432,432,432,432,432,
+                               478,
+                               524,524,524,524,524,524,524,
+                               570,570,570,570,
                                616,616,616,616,616,616,616,616,616,616,
                                662,662,662,
                                708,708,708,708, 708,708,708,708,708,708,
@@ -163,18 +173,18 @@ static int posicionxP2[127] = {64,64,64,64,64,64,64,64,64,64,
                                846,846,846,
                                892,892,892,892,892,892,892,892,892,892};
 
-static int posicionyP2[127] = {64,110,156,202,248,294,340,386,432,478,
+static int posicionyP2[cantP2] = {64,110,156,202,248,294,340,386,432,478,
                                156,340,478,
                                64,110,156,202,248,294,340,386,478,
                                156,386,432,478,
                                64,110,156,202,248,294,340,386,432,478,
                                156,432,478,
                                64,110,156,202,248,294,340,386,432,478,
-                               64,156,294,386,478,
-                               64,156,202,248,294,386,432,478,
-                               64,156,478,
-                               64,156,202,248,294,386,432,478,
-                               64,156,294,386,478,
+                               156,294,386,478,
+                               156,202,248,294,386,432,478,
+                               156,
+                               156,202,248,294,386,432,478,
+                               156,294,386,478,
                                64,110,156,202,248,294,340,386,432,478,
                                156,432,478,
                                64,110,156,202,248,294,340,386,432,478,
@@ -183,18 +193,18 @@ static int posicionyP2[127] = {64,110,156,202,248,294,340,386,432,478,
                                156,340,478,
                                64,110,156,202,248,294,340,386,432,478};
 
-static int posicionxP3[113] = {64,64,64,64,64,64,64,64,64,64,
+static int posicionxP3[cantP3] = {64,64,64,64,64,64,64,64,64,64,
                                110,110,110,110,
                                156,156,156,156,156,156,
                                202,202,202,202,202,202,202,202,
                                248,248,
                                294,294,294,294,294,294,294,294,294,
                                340,340,340,340,340,
-                               386,386,386,386,
-                               432,432,432,432,432,
-                               478,478,478,478,478,478,478,
-                               524,524,524,524,524,
-                               570,570,570,570,
+                               386,386,386,
+                               432,432,432,
+                               478,478,
+                               524,524,524,
+                               570,570,570,
                                616,616,616,616,616,
                                662,662,662,662,662,662,662,662,662,
                                708,708,
@@ -203,18 +213,18 @@ static int posicionxP3[113] = {64,64,64,64,64,64,64,64,64,64,
                                846,846,846,846,
                                892,892,892,892,892,892,892,892,892,892};
 
-static int posicionyP3[113] = {64,110,156,202,248,294,340,386,432,478,
+static int posicionyP3[cantP3] = {64,110,156,202,248,294,340,386,432,478,
                                64,202,386,478,
                                64,202,294,340,386,478,
                                64,110,156,202,294,340,386,478,
                                202,478,
                                64,110,202,248,294,340,386,432,478,
                                64,110,156,202,478,
-                               64,202,294,478,
-                               64,202,294,432,478,
-                               64,202,294,340,386,432,478,
-                               64,202,294,432,478,
-                               64,202,294,478,
+                               64,202,478,
+                               64,202,478,
+                               64,202,
+                               64,202,478,
+                               64,202,478,
                                64,110,156,202,478,
                                64,110,202,248,294,340,386,432,478,
                                202,478,
@@ -223,7 +233,7 @@ static int posicionyP3[113] = {64,110,156,202,248,294,340,386,432,478,
                                64,202,386,478,
                                64,110,156,202,248,294,340,386,432,478};
 
-static int posicionxP4[130] = {64,64,64,64,64,64,
+static int posicionxP4[cantP4] = {64,64,64,64,64,64,
                                110,110,110,
                                156,156,156,156,156,
                                202,202,202,202,202,202,202,202,202,202,202,
@@ -243,7 +253,7 @@ static int posicionxP4[130] = {64,64,64,64,64,64,
                                846,846,846,
                                892,892,892,892,892,892};
 
-static int posicionyP4[130] = {18,64,248,432,478,524,
+static int posicionyP4[cantP4] = {18,64,248,432,478,524,
                                 64,248,432,
                                 64,248,432,478,524,
                                 18,64,110,156,202,248,294,340,386,432,524,
@@ -273,9 +283,14 @@ static Texture2D personajeL;
 static Texture2D personajeR;
 
 static int vidas = 3;
-static int puntaje = 0;
-
-
+static int puntaje1 = 0;
+static int puntos1 = 0;
+static int puntaje2 = 0;
+static int puntos2 = 0;
+static int puntaje3 = 0;
+static int puntos3 = 0;
+static int puntaje4 = 0;
+static int puntos4 = 0;
 
 void juego(void){
     posJugx = 460;
@@ -292,12 +307,33 @@ void juego(void){
     enemigo1.activey = true;
     enemigo1.mEnex = 10;
     enemigo1.mEney = 6;
-    for(int i = 0; i < 116; i++){
+    for(int i = 0; i < cantP1; i++){
         pastillas1[i].rec.width = 10;
         pastillas1[i].rec.height = 10;
         pastillas1[i].rec.x = posicionxP1[i];
         pastillas1[i].rec.y = posicionyP1[i];
         pastillas1[i].active = true;
+    }
+    for(int i = 0; i < cantP2; i++){
+        pastillas2[i].rec.width = 10;
+        pastillas2[i].rec.height = 10;
+        pastillas2[i].rec.x = posicionxP2[i];
+        pastillas2[i].rec.y = posicionyP2[i];
+        pastillas2[i].active = true;
+    }
+    for(int i = 0; i < cantP3; i++){
+        pastillas3[i].rec.width = 10;
+        pastillas3[i].rec.height = 10;
+        pastillas3[i].rec.x = posicionxP3[i];
+        pastillas3[i].rec.y = posicionyP3[i];
+        pastillas3[i].active = true;
+    }
+    for(int i = 0; i < cantP4; i++){
+        pastillas4[i].rec.width = 10;
+        pastillas4[i].rec.height = 10;
+        pastillas4[i].rec.x = posicionxP4[i];
+        pastillas4[i].rec.y = posicionyP4[i];
+        pastillas4[i].active = true;
     }
 }
 
@@ -333,12 +369,13 @@ void actJuego1(void){
         }
         if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
     }
-    for(int i = 0; i < 116; i++){
+    for(int i = 0; i < cantP1; i++){
         if(pastillas1[i].active) {
             if (abs(posJugx + 23 - pastillas1[i].rec.x) < 23) {
                 if (abs(posJugy + 23 - pastillas1[i].rec.y) < 23) {
                     pastillas1[i].active = false;
-                    puntaje+=5;
+                    puntos1++;
+                    puntaje1+=10;
                 }
             }
         }
@@ -390,7 +427,139 @@ void actJuego1(void){
 //    }
 
 }
+void actJuego2(void) {
+    if (matriz2[posMy - 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_UP)) {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+        }
+        if (IsKeyPressed(KEY_UP)) player = personajeU;
+    }
 
+    if (matriz2[posMy + 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_DOWN)) {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+        }
+        if (IsKeyPressed(KEY_DOWN)) player = personajeD;
+    }
+
+    if (matriz2[posMy][posMx - 1] != "#") {
+        if (IsKeyPressed(KEY_LEFT)) {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+        }
+        if (IsKeyPressed(KEY_LEFT)) player = personajeL;
+    }
+
+    if (matriz2[posMy][posMx + 1] != "#") {
+        if (IsKeyPressed(KEY_RIGHT)) {
+            posJugx += jugador1.velocidad.x;
+            posMx++;
+        }
+        if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
+    }
+    for (int i = 0; i < cantP2; i++) {
+        if (pastillas2[i].active) {
+            if (abs(posJugx + 23 - pastillas2[i].rec.x) < 23) {
+                if (abs(posJugy + 23 - pastillas2[i].rec.y) < 23) {
+                    pastillas2[i].active = false;
+                    puntos2++;
+                    puntaje2 += 10;
+                }
+            }
+        }
+    }
+}
+
+void actJuego3(void) {
+    if (matriz3[posMy - 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_UP)) {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+        }
+        if (IsKeyPressed(KEY_UP)) player = personajeU;
+    }
+
+    if (matriz3[posMy + 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_DOWN)) {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+        }
+        if (IsKeyPressed(KEY_DOWN)) player = personajeD;
+    }
+
+    if (matriz3[posMy][posMx - 1] != "#") {
+        if (IsKeyPressed(KEY_LEFT)) {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+        }
+        if (IsKeyPressed(KEY_LEFT)) player = personajeL;
+    }
+
+    if (matriz3[posMy][posMx + 1] != "#") {
+        if (IsKeyPressed(KEY_RIGHT)) {
+            posJugx += jugador1.velocidad.x;
+            posMx++;
+        }
+        if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
+    }
+    for (int i = 0; i < cantP3; i++) {
+        if (pastillas3[i].active) {
+            if (abs(posJugx + 23 - pastillas3[i].rec.x) < 23) {
+                if (abs(posJugy + 23 - pastillas3[i].rec.y) < 23) {
+                    pastillas3[i].active = false;
+                    puntos3++;
+                    puntaje3 += 10;
+                }
+            }
+        }
+    }
+}
+void actJuego4(void) {
+    if (matriz4[posMy - 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_UP)) {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+        }
+        if (IsKeyPressed(KEY_UP)) player = personajeU;
+    }
+
+    if (matriz4[posMy + 1][posMx] != "#") {
+        if (IsKeyPressed(KEY_DOWN)) {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+        }
+        if (IsKeyPressed(KEY_DOWN)) player = personajeD;
+    }
+
+    if (matriz4[posMy][posMx - 1] != "#") {
+        if (IsKeyPressed(KEY_LEFT)) {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+        }
+        if (IsKeyPressed(KEY_LEFT)) player = personajeL;
+    }
+
+    if (matriz4[posMy][posMx + 1] != "#") {
+        if (IsKeyPressed(KEY_RIGHT)) {
+            posJugx += jugador1.velocidad.x;
+            posMx++;
+        }
+        if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
+    }
+    for (int i = 0; i < cantP4; i++) {
+        if (pastillas4[i].active) {
+            if (abs(posJugx + 23 - pastillas4[i].rec.x) < 23) {
+                if (abs(posJugy + 23 - pastillas4[i].rec.y) < 23) {
+                    pastillas4[i].active = false;
+                    puntos4++;
+                    puntaje4 += 10;
+                }
+            }
+        }
+    }
+}
 
 
 /**
@@ -422,6 +591,9 @@ int main() {
     Texture2D fondo4 = LoadTexture("Imagenes/fondo4.png");
 
     Texture2D fondoN1 = LoadTexture("Imagenes/fondoj1.png");
+    Texture2D fondoN2 = LoadTexture("Imagenes/fondoj2.png");
+    Texture2D fondoN3 = LoadTexture("Imagenes/fondoj3.png");
+    Texture2D fondoN4 = LoadTexture("Imagenes/fondoj4.png");
 
     Texture2D corazon = LoadTexture("Imagenes/heart.png");
 
@@ -502,18 +674,42 @@ int main() {
             case NIVEL1:
             {
                 actJuego1();
+                if(puntos1 == 1){
+                    currentScreen = NIVEL2;
+                    posMx = 10;
+                    posMy = 10;
+                    posJugx = 459;
+                    posJugy = 459;
+                }
             } break;
             case NIVEL2:
             {
-
+                actJuego2();
+                if(puntos2 == cantP2){
+                    currentScreen = NIVEL3;
+                    posMx = 10;
+                    posMy = 10;
+                    posJugx = 459;
+                    posJugy = 459;
+                }
             } break;
             case NIVEL3:
             {
-
+                actJuego3();
+                if(puntos3 == cantP3){
+                    currentScreen = NIVEL4;
+                    posMx = 10;
+                    posMy = 9;
+                    posJugx = 459;
+                    posJugy = 375;
+                }
             } break;
             case NIVEL4:
             {
-
+                actJuego4();
+                if(puntos4 == cantP4){
+                    currentScreen = GANAR;
+                }
             } break;
             case GANAR:
             {
@@ -554,12 +750,13 @@ int main() {
             case NIVEL1:
             {
                 DrawTexture(fondoN1, 0, 0, RAYWHITE);
-                DrawText("SCORE:",290,15,20,GRAY);
-                DrawText(TextFormat("%04i",puntaje),370,15,20,GRAY);
-                DrawTexture(corazon, 440,10,RAYWHITE);
-                DrawText("x",473,13,20,GRAY);
-                DrawText(TextFormat("%02i",vidas),490,15,20,GRAY);
-                DrawText("LEVEL 1",560,15,20,GRAY);
+                DrawRectangle(280,10,400,30,BLACK);
+                DrawText("SCORE:",300,15,20,GRAY);
+                DrawText(TextFormat("%04i", puntaje1), 380, 15, 20, GRAY);
+                DrawTexture(corazon, 450,10,RAYWHITE);
+                DrawText("x",483,13,20,GRAY);
+                DrawText(TextFormat("%02i",vidas),500,15,20,GRAY);
+                DrawText("LEVEL 1",570,15,20,GRAY);
                 DrawTexture(player, posJugx,posJugy, RAYWHITE);
                 DrawTexture(pacama, enemigo1.posEnex, enemigo1.posEney, RAYWHITE);
                 for(int i = 0; i < 116; i++) {
@@ -570,14 +767,57 @@ int main() {
             } break;
             case NIVEL2:
             {
-
+                DrawTexture(fondoN2, 0, 0, LIGHTGRAY);
+                DrawRectangle(280,10,400,30,GRAY);
+                DrawText("SCORE:",300,15,20,WHITE);
+                DrawText(TextFormat("%04i", puntaje2), 380, 15, 20, WHITE);
+                DrawTexture(corazon, 450,10,RAYWHITE);
+                DrawText("x",483,13,20,WHITE);
+                DrawText(TextFormat("%02i",vidas),500,15,20,WHITE);
+                DrawText("LEVEL 2",570,15,20,WHITE);
+                DrawTexture(player, posJugx,posJugy, RAYWHITE);
+                DrawTexture(pacama, enemigo1.posEnex, enemigo1.posEney, RAYWHITE);
+                for(int i = 0; i < cantP2; i++) {
+                    if(pastillas2[i].active){
+                        DrawRectangleRec(pastillas2[i].rec,YELLOW);
+                    }
+                }
             } break;
             case NIVEL3:
             {
+                DrawTexture(fondoN3, 0, 0, RAYWHITE);
+                DrawRectangle(280,10,400,30,GRAY);
+                DrawText("SCORE:",300,15,20,WHITE);
+                DrawText(TextFormat("%04i", puntaje3), 380, 15, 20, WHITE);
+                DrawTexture(corazon, 450,10,RAYWHITE);
+                DrawText("x",483,13,20,WHITE);
+                DrawText(TextFormat("%02i",vidas),500,15,20,WHITE);
+                DrawText("LEVEL 3",570,15,20,WHITE);
+                DrawTexture(player, posJugx,posJugy, RAYWHITE);
+                DrawTexture(pacama, enemigo1.posEnex, enemigo1.posEney, RAYWHITE);
+                for(int i = 0; i < cantP3; i++) {
+                    if(pastillas3[i].active){
+                        DrawRectangleRec(pastillas3[i].rec,YELLOW);
+                    }
+                }
             } break;
             case NIVEL4:
             {
-
+                DrawTexture(fondoN4, 0, 0, RAYWHITE);
+                DrawRectangle(280,10,400,30,BLACK);
+                DrawText("SCORE:",300,15,20,GRAY);
+                DrawText(TextFormat("%04i", puntaje4), 380, 15, 20, GRAY);
+                DrawTexture(corazon, 450,10,RAYWHITE);
+                DrawText("x",483,13,20,GRAY);
+                DrawText(TextFormat("%02i",vidas),500,15,20,GRAY);
+                DrawText("LEVEL 4",570,15,20,GRAY);
+                DrawTexture(player, posJugx,posJugy, RAYWHITE);
+                DrawTexture(pacama, enemigo1.posEnex, enemigo1.posEney, RAYWHITE);
+                for(int i = 0; i < cantP4; i++) {
+                    if(pastillas4[i].active){
+                        DrawRectangleRec(pastillas4[i].rec,YELLOW);
+                    }
+                }
             } break;
             case GANAR:
             {
