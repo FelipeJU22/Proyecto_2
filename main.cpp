@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <boost/asio.hpp>
 #include <thread>
+#include <ctime>
+#include <cstdlib>
 
 using boost::asio::ip::tcp;
 
@@ -34,6 +36,22 @@ typedef struct Pastillas{
     bool active;
     int numero;
 }Pastillas;
+
+static float delayTimerMax = 15.f;
+static float delayTimer = 0.f;
+
+float MoverTimerMax = 20.f;
+float MoverTimer = 0.f;
+static int cont1 = 0;
+static int random_number;
+const int ROWS = 12;
+const int COLS = 21;
+
+// Definimos una estructura para representar las coordenadas en la matriz.
+struct Coord {
+    int row;
+    int col;
+};
 
 
 static string matriz1[12][21] = {
@@ -90,7 +108,7 @@ static string matriz4[14][21] = {
         {"#","#","#","#","0","#","0","0","#","#","0","#","#","0","0","#","0","#","#","#","#"},
         {"#","0","0","0","0","0","0","0","#","0","0","0","#","0","0","0","0","0","0","0","#"},
         {"#","#","#","#","0","#","0","0","#","0","0","0","#","0","0","#","0","#","#","#","#"},
-        {"#","#","#","#","#","#","0","0","#","#","#","#","#","0","0","#","0","#","#","#","#"},
+        {"#","#","#","#","0","#","0","0","#","#","#","#","#","0","0","#","0","#","#","#","#"},
         {"#","#","#","#","0","#","0","0","0","0","0","0","0","0","0","#","0","#","#","#","#"},
         {"#","0","0","0","0","0","0","0","#","#","#","#","#","0","0","0","0","0","0","0","#"},
         {"#","0","#","0","#","#","#","0","0","0","#","0","0","0","#","#","#","0","0","0","#"},
@@ -105,7 +123,7 @@ static int posJugx;
 static int posJugy;
 static Jugador jugador1 = { 0 };
 static Enemigos enemigo1 = { 0 };
-static int cont1 = 0;
+static int cont = 0;
 static int cont2 = 0;
 
 
@@ -299,6 +317,52 @@ static int puntos3 = 0;
 static int puntaje4 = 0;
 static int puntos4 = 0;
 
+bool isValid(int row, int col) {
+    return row >= 0 && row < ROWS && col >= 0 && col < COLS;
+}
+// Función que realiza la búsqueda de profundidad primero (DFS).
+bool dfs(vector<Coord>& path, int currRow, int currCol, int destRow, int destCol) {
+    // Si alcanzamos el destino, agregamos la coordenada a la ruta y retornamos verdadero.
+    if (currRow == destRow && currCol == destCol) {
+        path.push_back({currRow, currCol});
+        return true;
+    }
+
+    // Marcamos la coordenada actual como visitada.
+    //matriz1[currRow][currCol] = 2;
+
+    // Verificamos cada posible dirección.
+    int dr[] = {1, 0, -1, 0};
+    int dc[] = {0, 1, 0, -1};
+    for (int i = 0; i < 4; i++) {
+        int newRow = currRow + dr[i];
+        int newCol = currCol + dc[i];
+        if (isValid(newRow, newCol) && matriz1[newRow][newCol] == "0") {
+            if (dfs(path, newRow, newCol, destRow, destCol)) {
+                // Si encontramos el destino, agregamos la coordenada actual a la ruta y retornamos verdadero.
+                path.push_back({currRow, currCol});
+                return true;
+            }
+        }
+    }
+
+    // Si no encontramos el destino, removemos la coordenada actual de la ruta y retornamos falso.
+    path.pop_back();
+    return false;
+}
+// Función principal que llama a la búsqueda de profundidad primero (DFS) e imprime la ruta encontrada.
+void findPath(int startRow, int startCol, int destRow, int destCol) {
+    vector<Coord> path;
+    if (dfs(path, startRow, startCol, destRow, destCol)) {
+        cout << "Ruta encontrada:" << endl;
+        for (int i = path.size() - 1; i >= 0; i--) {
+            cout << "(" << path[i].row << ", " << path[i].col << ")" << endl;
+        }
+    } else {
+        cout << "No se encontró una ruta." << endl;
+    }
+}
+
 void juego(void){
     posJugx = 460;
     posJugy = 416;
@@ -306,14 +370,14 @@ void juego(void){
     posMy = 9;
     jugador1.velocidad.x = 46;
     jugador1.velocidad.y = 46;
-    enemigo1.velene.x = 1;
-    enemigo1.velene.y = 1;
+    enemigo1.velene.x = 46;
+    enemigo1.velene.y = 46;
     enemigo1.posEnex = 460;
-    enemigo1.posEney = 280;
+    enemigo1.posEney = 234;
     enemigo1.activex = false;
     enemigo1.activey = true;
     enemigo1.mEnex = 10;
-    enemigo1.mEney = 6;
+    enemigo1.mEney = 5;
     for(int i = 0; i < cantP1; i++){
         pastillas1[i].rec.width = 10;
         pastillas1[i].rec.height = 10;
@@ -345,15 +409,22 @@ void juego(void){
 }
 
 void actJuego1(void){
+    delayTimer += 0.5f;
+
     if(matriz1[posMy-1][posMx] != "#"){
         if (IsKeyPressed(KEY_UP)) {
             posJugy -= jugador1.velocidad.y;
+            //matriz1[posMy][posMx] = "0";
             posMy--;
+            //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_UP)) player = personajeU;
         if (mencel == "1") {
             posJugy -= jugador1.velocidad.y;
+            //matriz1[posMy][posMx] = "0";
             posMy--;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (mencel == "1") player = personajeU;
     }
@@ -361,12 +432,18 @@ void actJuego1(void){
     if(matriz1[posMy+1][posMx] != "#"){
         if (IsKeyPressed(KEY_DOWN)) {
             posJugy += jugador1.velocidad.y;
+            //matriz1[posMy][posMx] = "0";
             posMy++;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_DOWN)) player = personajeD;
         if (mencel == "2") {
             posJugy += jugador1.velocidad.y;
+            //matriz1[posMy][posMx] = "0";
             posMy++;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (mencel == "2") player = personajeD;
 
@@ -375,12 +452,18 @@ void actJuego1(void){
     if(matriz1[posMy][posMx-1] != "#" ){
         if (IsKeyPressed(KEY_LEFT)) {
             posJugx -= jugador1.velocidad.x;
+            //matriz1[posMy][posMx] = "0";
             posMx--;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_LEFT)) player = personajeL;
         if (mencel == "3") {
             posJugx -= jugador1.velocidad.x;
+            //matriz1[posMy][posMx] = "0";
             posMx--;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (mencel == "3") player = personajeL;
     }
@@ -388,12 +471,18 @@ void actJuego1(void){
     if(matriz1[posMy][posMx+1] != "#"){
         if (IsKeyPressed(KEY_RIGHT)) {
             posJugx += jugador1.velocidad.x;
+            //matriz1[posMy][posMx] = "0";
             posMx++;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
         if (mencel == "4") {
             posJugx += jugador1.velocidad.x;
+            //matriz1[posMy][posMx] = "0";
             posMx++;
+
+            //matriz1[posMy][posMx] = "1";
         }
         if (mencel == "4") player = personajeR;
     }
@@ -408,83 +497,106 @@ void actJuego1(void){
             }
         }
     }
-//
-//    if(matriz1[enemigo1.mEney-1][enemigo1.mEnex] != "#"){
-//        if(enemigo1.activey){
-//            enemigo1.posEney -= enemigo1.velene.y;
-//            cont2++;
-//        }
-//        if(cont2 == 46){
-//            cont2 = 0;
-//            enemigo1.mEney--;
-//            cout<<enemigo1.mEney<<endl;
-//        }
-//
-//    }
-//    else{
-//        enemigo1.mEney--;
-//        enemigo1.activex = true;
-//        enemigo1.activey = false;
-//    }
-//    if(enemigo1.activex){
-//        enemigo1.posEnex -= enemigo1.velene.x;
-//        cont1++;
-//        if(cont1 == 46){
-//            if(matriz1[enemigo1.mEney][enemigo1.mEnex-1] != "#"){
-//                cont1 = 0;
-//                enemigo1.mEnex--;
-//            }
-//            else{
-//                enemigo1.mEnex--;
-//                enemigo1.activey = true;
-//                enemigo1.activex = false;
-//            }
-//        }
-//    }
-//    if(enemigo1.activex){
-//        if(matriz1[enemigo1.mEney][enemigo1.mEnex+1] != "#") {
-//            enemigo1.posEnex += enemigo1.velene.x;
-//            cont1++;
-//        }
-//    }
-//    if(cont1 == 46){
-//        cont1 = 0;
-//        enemigo1.mEnex++;
-//        enemigo1.activex = false;
-//        enemigo1.activey = true;
-//    }
+
+    if (delayTimer >=delayTimerMax){
+        /**
+        if (random_number == 0){
+            if(matriz1[enemigo1.mEney-1][enemigo1.mEnex] != "#"){
+                enemigo1.posEney -= enemigo1.velene.y;
+                enemigo1.mEney--;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 1){
+            if(matriz1[enemigo1.mEney+1][enemigo1.mEnex] != "#"){
+                        enemigo1.posEney += enemigo1.velene.y;
+                        enemigo1.mEney++;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 2){
+            if(matriz1[enemigo1.mEney][enemigo1.mEnex-1] != "#"){
+                        enemigo1.posEnex -= enemigo1.velene.x;
+                        enemigo1.mEnex--;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 3){
+            if(matriz1[enemigo1.mEney][enemigo1.mEnex+1] != "#"){
+                        enemigo1.posEnex += enemigo1.velene.x;
+                        enemigo1.mEnex++;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+         */
+        delayTimer = 0.f;
+    }
+
 }
 void actJuego2(void) {
-    if (matriz2[posMy - 1][posMx] != "#") {
+    if(matriz2[posMy-1][posMx] != "#"){
         if (IsKeyPressed(KEY_UP)) {
             posJugy -= jugador1.velocidad.y;
             posMy--;
         }
         if (IsKeyPressed(KEY_UP)) player = personajeU;
+        if (mencel == "1") {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+        }
+        if (mencel == "1") player = personajeU;
     }
 
-    if (matriz2[posMy + 1][posMx] != "#") {
+    if(matriz2[posMy+1][posMx] != "#"){
         if (IsKeyPressed(KEY_DOWN)) {
             posJugy += jugador1.velocidad.y;
             posMy++;
         }
         if (IsKeyPressed(KEY_DOWN)) player = personajeD;
+        if (mencel == "2") {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+        }
+        if (mencel == "2") player = personajeD;
+
     }
 
-    if (matriz2[posMy][posMx - 1] != "#") {
+    if(matriz2[posMy][posMx-1] != "#" ){
         if (IsKeyPressed(KEY_LEFT)) {
             posJugx -= jugador1.velocidad.x;
             posMx--;
         }
         if (IsKeyPressed(KEY_LEFT)) player = personajeL;
+        if (mencel == "3") {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+        }
+        if (mencel == "3") player = personajeL;
     }
 
-    if (matriz2[posMy][posMx + 1] != "#") {
+    if(matriz2[posMy][posMx+1] != "#"){
         if (IsKeyPressed(KEY_RIGHT)) {
             posJugx += jugador1.velocidad.x;
+            matriz2[posMy][posMx] = "0";
             posMx++;
+            matriz2[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
+        if (mencel == "4") {
+            posJugx += jugador1.velocidad.x;
+            matriz2[posMy][posMx] = "0";
+            posMx++;
+            matriz2[posMy][posMx] = "1";
+        }
+        if (mencel == "4") player = personajeR;
     }
     for (int i = 0; i < cantP2; i++) {
         if (pastillas2[i].active) {
@@ -614,13 +726,14 @@ void celular() {
             }
 
             string message(boost::asio::buffer_cast<const char *>(buffer.data()), buffer.size());
-            std::cout << "Received message: " << message << std::endl;
-            cout<<"posicion m x: " <<posMx<<endl;
-            cout<<"posicion m y: " <<posMy<<endl;
-            size_t received_len = read_socket(received, sizeof(received));
-            if (!message.empty() && message.back() == '\n') {
-                message.pop_back();
+//            cout<<"posicion m x: " <<posMx<<endl;
+//            cout<<"posicion m y: " <<posMy<<endl;
+            //size_t received_len = read_socket(received, sizeof(received));
+            int startind = message.find("\n");
+            if (startind != std::string::npos) {
+                message.erase(startind, message.length() - startind);
             }
+            std::cout << "Received message: " << message << std::endl;
 
             mencel = message;
 
@@ -640,6 +753,8 @@ void celular() {
  * @return
  */
 int main() {
+    srand(time(0));
+    random_number = rand() % 4;
     const int screenWidth = 960;
     const int screenHeight = 540;
     thread cel(celular);
