@@ -1,5 +1,12 @@
 #include <iostream>
 #include <raylib.h>
+#include <boost/asio.hpp>
+#include <thread>
+
+using boost::asio::ip::tcp;
+
+static boost::asio::io_context io_context;
+
 using namespace std;
 
 /**
@@ -92,7 +99,7 @@ static string matriz4[14][21] = {
 };
 
 
-
+static string mencel;
 
 static int posJugx;
 static int posJugy;
@@ -344,6 +351,11 @@ void actJuego1(void){
             posMy--;
         }
         if (IsKeyPressed(KEY_UP)) player = personajeU;
+        if (mencel == "1") {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+        }
+        if (mencel == "1") player = personajeU;
     }
 
     if(matriz1[posMy+1][posMx] != "#"){
@@ -352,14 +364,25 @@ void actJuego1(void){
             posMy++;
         }
         if (IsKeyPressed(KEY_DOWN)) player = personajeD;
+        if (mencel == "2") {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+        }
+        if (mencel == "2") player = personajeD;
+
     }
 
-    if(matriz1[posMy][posMx-1] != "#"){
+    if(matriz1[posMy][posMx-1] != "#" ){
         if (IsKeyPressed(KEY_LEFT)) {
             posJugx -= jugador1.velocidad.x;
             posMx--;
         }
         if (IsKeyPressed(KEY_LEFT)) player = personajeL;
+        if (mencel == "3") {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+        }
+        if (mencel == "3") player = personajeL;
     }
 
     if(matriz1[posMy][posMx+1] != "#"){
@@ -368,6 +391,11 @@ void actJuego1(void){
             posMx++;
         }
         if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
+        if (mencel == "4") {
+            posJugx += jugador1.velocidad.x;
+            posMx++;
+        }
+        if (mencel == "4") player = personajeR;
     }
     for(int i = 0; i < cantP1; i++){
         if(pastillas1[i].active) {
@@ -380,7 +408,7 @@ void actJuego1(void){
             }
         }
     }
-
+//
 //    if(matriz1[enemigo1.mEney-1][enemigo1.mEnex] != "#"){
 //        if(enemigo1.activey){
 //            enemigo1.posEney -= enemigo1.velene.y;
@@ -425,7 +453,6 @@ void actJuego1(void){
 //        enemigo1.activex = false;
 //        enemigo1.activey = true;
 //    }
-
 }
 void actJuego2(void) {
     if (matriz2[posMy - 1][posMx] != "#") {
@@ -560,7 +587,52 @@ void actJuego4(void) {
         }
     }
 }
+void celular() {
+    char received[1024];
+    try {
+        tcp::acceptor acceptor(io_context,
+                               tcp::endpoint(boost::asio::ip::address::from_string("192.168.100.195"), 5001));
 
+        std::cout << "Waiting for incoming connection..." << std::endl;
+
+        tcp::socket socket(io_context);
+        acceptor.accept(socket);
+
+        std::cout << "Connection accepted." << std::endl;
+
+        boost::asio::streambuf buffer;
+        boost::system::error_code error;
+
+        while (true) {
+
+            boost::asio::read_until(socket, buffer, "\n", error);
+
+            if (error == boost::asio::error::eof) {
+                break; // Connection closed cleanly by peer.
+            } else if (error) {
+                throw boost::system::system_error(error); // Some other error.
+            }
+
+            string message(boost::asio::buffer_cast<const char *>(buffer.data()), buffer.size());
+            std::cout << "Received message: " << message << std::endl;
+            cout<<"posicion m x: " <<posMx<<endl;
+            cout<<"posicion m y: " <<posMy<<endl;
+            size_t received_len = read_socket(received, sizeof(received));
+            if (!message.empty() && message.back() == '\n') {
+                message.pop_back();
+            }
+
+            mencel = message;
+
+            buffer.consume(buffer.size());
+
+        }
+    }
+    catch (std::exception & e)
+        {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
+}
 
 /**
  * Función Main, utilizada para iniciar el código, abrir la ventana inicial del juego, dibujar texturas, actualizar y
@@ -570,7 +642,7 @@ void actJuego4(void) {
 int main() {
     const int screenWidth = 960;
     const int screenHeight = 540;
-
+    thread cel(celular);
     InitWindow(screenWidth, screenHeight, "-APACALYPSE-");
     GameScreen currentScreen = INICIO;
 
@@ -603,9 +675,13 @@ int main() {
     SetTargetFPS(120);               // Set desired framerate (frames-per-second)
     //--------------------------------------------------------------------------------------
 
+
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+
+
+
         // Update
         //----------------------------------------------------------------------------------
         switch(currentScreen)
@@ -674,7 +750,7 @@ int main() {
             case NIVEL1:
             {
                 actJuego1();
-                if(puntos1 == 1){
+                if(puntos1 == cantP1){
                     currentScreen = NIVEL2;
                     posMx = 10;
                     posMy = 10;
@@ -839,12 +915,22 @@ int main() {
      */
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(fondoI);
-    UnloadTexture(fondoS);
+        UnloadTexture(fondoI);
+        UnloadTexture(fondoS);
+        UnloadTexture(fondo0);
+        UnloadTexture(fondo1);
+        UnloadTexture(fondo2);
+        UnloadTexture(fondo3);
+        UnloadTexture(fondo4);
+        UnloadTexture(fondoN1);
+        UnloadTexture(fondoN2);
+        UnloadTexture(fondoN3);
+        UnloadTexture(fondoN4);
+
+        UnloadTexture(corazon);
+        UnloadTexture(pacama);
 
 
-
-    CloseWindow();
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
