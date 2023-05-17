@@ -34,12 +34,14 @@ typedef struct Pastillas{
     bool active;
     int numero;
 }Pastillas;
-
+// Delay que va a haber entre cada movimiento del enemigo
 static float delayTimerMax = 15.f;
 static float delayTimer = 0.f;
+static float pastillaDelayMax = 220.f;
+static float pastillaDelay = 0.f;
+static float spawnTimerMax = 350.f;
+static float spawnTimer = 0.f;
 
-float MoverTimerMax = 20.f;
-float MoverTimer = 0.f;
 static int cont1 = 0;
 static int random_number;
 const int ROWS = 12;
@@ -53,6 +55,7 @@ struct Coord {
 
 // Vector para almacenar la ruta más rápida
 std::vector<std::pair<int, int>> fastest_route;
+// Vector que usamos para que el enemigo se mueva
 std::vector<std::pair<int, int>> mover;
 
 
@@ -71,7 +74,7 @@ static string matriz1[ROWS][COLS] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}
 };
 
-static string matriz2[12][21] = {
+static string matriz2[ROWS][COLS] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"},
         {"#","0","#","0","#","0","#","0","0","0","0","0","0","0","#","0","#","0","#","0","#"},
         {"#","0","#","0","#","0","#","0","#","#","#","#","#","0","#","0","#","0","#","0","#"},
@@ -86,7 +89,7 @@ static string matriz2[12][21] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}
 };
 
-static string matriz3[12][21] = {
+static string matriz3[ROWS][COLS] = {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"},
         {"#","0","0","0","0","#","0","0","0","0","0","0","0","0","0","#","0","0","0","0","#"},
         {"#","0","#","#","0","#","0","0","#","#","#","#","#","0","0","#","0","#","#","0","#"},
@@ -145,6 +148,7 @@ static Pastillas superP2[4] = {0};
 static Pastillas superP3[3] = {0};
 static Pastillas superP4[4] = {0};
 static bool pastilla = false;
+static bool respawn = false;
 /**
  * Posiciones pastillas
  */
@@ -331,7 +335,8 @@ static int puntos4 = 0;
 // Función para encontrar la ruta más rápida utilizando backtracking
 void backtrack(int row, int col, std::vector<std::pair<int, int>>& route) {
     // Si se llegó al punto de destino, comprobar si esta es la ruta más rápida
-    //if (row == end_row && col == end_col)
+    //posMy va a ser la posicion de FILA de la matriz del destino, en este caso el jugador
+    //posMx va a ser la posicion de COLUMNA de la matriz del destino, en este caso el jugador
     if (row == posMy && col == posMx) {
         if (fastest_route.empty() || route.size() < fastest_route.size()) {
             fastest_route = route;
@@ -341,9 +346,10 @@ void backtrack(int row, int col, std::vector<std::pair<int, int>>& route) {
     }
 
     // Marcamos la casilla actual como visitada
+    //en vez de matriz1 pone el nombre de su matriz
     matriz1[row][col] = "V";
 
-    // Movimiento hacia arriba
+    // Movimiento hacia arriba, los # en nuestro caso son las paredes y obstaculos de la matriz
     if (row > 0 && matriz1[row-1][col] != "#" && matriz1[row-1][col] != "V") {
         route.push_back(std::make_pair(row-1, col));
         backtrack(row-1, col, route);
@@ -371,7 +377,8 @@ void backtrack(int row, int col, std::vector<std::pair<int, int>>& route) {
         route.pop_back();
     }
 
-    // Desmarcamos la casilla actual como visitada
+    // Desmarcamos la casilla actual como visitada,
+    // en nuestro caso es "0" porque los espacios libres lo estamos trabajando con "0"
     matriz1[row][col] = "0";
 }
 void juego(void){
@@ -453,10 +460,36 @@ void juego(void){
 }
 
 void actJuego1(void){
+    //Funcion que se encuentra dentro del while (!WindowShouldClose())
+    // al estar dentro del while el contador va a iniciar
     delayTimer += 0.5f;
+    if (respawn) {
+        spawnTimer += 0.5f;
+        enemigo1.posEnex = -50;
+        enemigo1.posEney = -50;
+        enemigo1.mEnex = 0;
+        enemigo1.mEney = 0;
+        if (spawnTimer >= spawnTimerMax){
+            respawn = false;
+            spawnTimer = 0.f;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 5;
+        }
+    }
+    if (pastilla) {
+        pastillaDelay += 0.5f;
+        if (pastillaDelay >= pastillaDelayMax) {
+            pastilla = false;
+            pastillaDelay = 0.f;
+            cout << "Pastilla desactivada" << endl;
+        }
+    }
 
     if(matriz1[posMy-1][posMx] != "#"){
         if (IsKeyPressed(KEY_UP)) {
+
             posJugy -= jugador1.velocidad.y;
             //matriz1[posMy][posMx] = "0";
             posMy--;
@@ -485,7 +518,6 @@ void actJuego1(void){
     if(matriz1[posMy+1][posMx] != "#"){
         if (IsKeyPressed(KEY_DOWN)) {
             posJugy += jugador1.velocidad.y;
-            //matriz1[posMy][posMx] = "0";
             posMy++;
             // Vector para almacenar la ruta
             std::vector<std::pair<int, int>> route;
@@ -494,11 +526,11 @@ void actJuego1(void){
             // Buscamos la ruta más rápida
             backtrack(enemigo1.mEney, enemigo1.mEnex, route);
 
+            // Limpiamos el backtracking (importan
             fastest_route.clear();
             route.clear();
 
 
-            //matriz1[posMy][posMx] = "1";
         }
         if (IsKeyPressed(KEY_DOWN)) player = personajeD;
         if (mencel == "2") {
@@ -579,6 +611,8 @@ void actJuego1(void){
         }
     }
 
+    // Cuando el contador llegue a 15.f como se definió antes.
+    // entonces
     if (delayTimer >=delayTimerMax){
         if (!mover.empty()){
             if (mover[1].first < enemigo1.mEney){
@@ -602,6 +636,8 @@ void actJuego1(void){
         if(!pastilla){
             if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
                 vidas--;
+                fastest_route.clear();
+                mover.clear();
                 posJugx = 460;
                 posJugy = 416;
                 posMx = 10;
@@ -614,11 +650,15 @@ void actJuego1(void){
         }
         if(pastilla){
             if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+                fastest_route.clear();
+                mover.clear();
                 puntaje1 += 50;
-                enemigo1.posEnex = 460;
-                enemigo1.posEney = 234;
-                enemigo1.mEnex = 10;
-                enemigo1.mEney = 5;
+                respawn = true;
+
+//                enemigo1.posEnex = 460;
+//                enemigo1.posEney = 234;
+//                enemigo1.mEnex = 10;
+//                enemigo1.mEney = 5;
             }
         }
         //En caso de que queramos mover el pacman de manera aleatoria
@@ -677,16 +717,29 @@ void actJuego1(void){
                 if (abs(posJugy + 23 - superP1[i].rec.y) < 23) {
                     superP1[i].active = false;
                     pastilla = true;
+                    cout << "Pastilla activada" << endl;
+
                 }
             }
         }
     }
 }
 void actJuego2(void) {
+    delayTimer += 0.5f;
+
     if(matriz2[posMy-1][posMx] != "#"){
         if (IsKeyPressed(KEY_UP)) {
             posJugy -= jugador1.velocidad.y;
             posMy--;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+            fastest_route.clear();
+            route.clear();
+
         }
         if (IsKeyPressed(KEY_UP)) player = personajeU;
         if (mencel == "1") {
@@ -705,6 +758,16 @@ void actJuego2(void) {
         if (mencel == "2") {
             posJugy += jugador1.velocidad.y;
             posMy++;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
+
         }
         if (mencel == "2") player = personajeD;
 
@@ -719,6 +782,16 @@ void actJuego2(void) {
         if (mencel == "3") {
             posJugx -= jugador1.velocidad.x;
             posMx--;
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
+
         }
         if (mencel == "3") player = personajeL;
     }
@@ -726,16 +799,22 @@ void actJuego2(void) {
     if(matriz2[posMy][posMx+1] != "#"){
         if (IsKeyPressed(KEY_RIGHT)) {
             posJugx += jugador1.velocidad.x;
-            matriz2[posMy][posMx] = "0";
             posMx++;
-            matriz2[posMy][posMx] = "1";
+            // Vector para almacenar la ruta
+            std::vector<std::pair<int, int>> route;
+            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+
+            // Buscamos la ruta más rápida
+            backtrack(enemigo1.mEney, enemigo1.mEnex, route);
+
+            fastest_route.clear();
+            route.clear();
+
         }
         if (IsKeyPressed(KEY_RIGHT)) player = personajeR;
         if (mencel == "4") {
             posJugx += jugador1.velocidad.x;
-            matriz2[posMy][posMx] = "0";
             posMx++;
-            matriz2[posMy][posMx] = "1";
         }
         if (mencel == "4") player = personajeR;
     }
@@ -750,6 +829,96 @@ void actJuego2(void) {
             }
         }
     }
+    if (delayTimer >=delayTimerMax){
+        if (!mover.empty()){
+            if (mover[1].first < enemigo1.mEney){
+                enemigo1.posEney -= enemigo1.velene.y;
+                enemigo1.mEney--;
+            }
+            if (mover[1].first > enemigo1.mEney){
+                enemigo1.posEney += enemigo1.velene.y;
+                enemigo1.mEney++;
+            }
+            if (mover[1].second < enemigo1.mEnex) {
+                enemigo1.posEnex -= enemigo1.velene.x;
+                enemigo1.mEnex--;
+            }
+            if (mover[1].second > enemigo1.mEnex) {
+                enemigo1.posEnex += enemigo1.velene.x;
+                enemigo1.mEnex++;
+            }
+            mover.erase(mover.begin());
+        }
+        if(!pastilla){
+            if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+                vidas--;
+                fastest_route.clear();
+                mover.clear();
+
+                posJugx = 460;
+                posJugy = 416;
+                posMx = 10;
+                posMy = 9;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 5;
+            }
+        }
+        if(pastilla){
+            if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+                fastest_route.clear();
+                mover.clear();
+
+                puntaje1 += 50;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 5;
+            }
+        }
+        //En caso de que queramos mover el pacman de manera aleatoria
+
+        if (random_number == 0){
+            if(matriz2[enemigo2.mEney-1][enemigo2.mEnex] != "#"){
+                enemigo2.posEney -= enemigo2.velene.y;
+                enemigo2.mEney--;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 1){
+            if(matriz2[enemigo2.mEney+1][enemigo2.mEnex] != "#"){
+                enemigo2.posEney += enemigo2.velene.y;
+                enemigo2.mEney++;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 2){
+            if(matriz2[enemigo2.mEney][enemigo2.mEnex-1] != "#"){
+                enemigo2.posEnex -= enemigo2.velene.x;
+                enemigo2.mEnex--;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+        if (random_number == 3){
+            if(matriz2[enemigo2.mEney][enemigo2.mEnex+1] != "#"){
+                enemigo2.posEnex += enemigo2.velene.x;
+                enemigo2.mEnex++;
+            }
+            else {
+                random_number = rand() % 4;
+            }
+        }
+
+        delayTimer = 0.f;
+    }
+
     if(puntaje2 == 300){
         superP2[0].active = true;
     }
@@ -904,7 +1073,7 @@ void celular() {
     char received[1024];
     try {
         tcp::acceptor acceptor(io_context,
-                               tcp::endpoint(boost::asio::ip::address::from_string("192.168.100.195"), 5001));
+                               tcp::endpoint(boost::asio::ip::address::from_string("192.168.100.213"), 5001));
 
         std::cout << "Waiting for incoming connection..." << std::endl;
 
@@ -927,6 +1096,7 @@ void celular() {
             }
 
             string message(boost::asio::buffer_cast<const char *>(buffer.data()), buffer.size());
+            string response = to_string(puntaje1);
 //            cout<<"posicion m x: " <<posMx<<endl;
 //            cout<<"posicion m y: " <<posMy<<endl;
             //size_t received_len = read_socket(received, sizeof(received));
@@ -934,7 +1104,10 @@ void celular() {
             if (startind != std::string::npos) {
                 message.erase(startind, message.length() - startind);
             }
+            boost::asio::write(socket, boost::asio::buffer("Hola\n"));
+
             std::cout << "Received message: " << message << std::endl;
+            std::cout << "Mensaje enviado: " << response << std::endl;
 
             mencel = message;
 
@@ -1079,6 +1252,8 @@ int main() {
             {
                 actJuego1();
                 if(puntos1 == cantP1){
+                    fastest_route.clear();
+                    mover.clear();
                     currentScreen = NIVEL2;
                     posMx = 10;
                     posMy = 10;
