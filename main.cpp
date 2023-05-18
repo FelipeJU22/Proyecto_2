@@ -33,6 +33,8 @@ typedef struct Pastillas{
     Rectangle rec;
     bool active;
     int numero;
+    int MxSupP;
+    int MySupP;
 }Pastillas;
 // Delay que va a haber entre cada movimiento del enemigo
 static float delayTimerMax = 15.f;
@@ -192,6 +194,46 @@ static int posicionyP1[cantP1] = {64,110,156,202,248,294,340,386,432,478,
                                64,248,478,
                                64,110,156,202,248,294,340,386,432,478};
 
+static int posMxP1[cantP1] = {1,1,1,1,1,1,1,1,1,1,
+                             2,2,2,
+                             3,3,3,3,3,3,3,3,3,
+                             4,4,4,4,4,4,4,
+                             5,5,5,5,
+                             6,6,6,6,6,6,6,
+                             7,7,7,7,7,7,7,7,
+                             8,8,8,8,
+                             9,9,9,9,
+                             10,10,10,10,
+                             11,11,11,11,
+                             12,12,12,12,
+                             13,13,13,13,13,13,13,13,
+                             14,14,14,14,14,14,14,
+                             15,15,15,15,
+                             16,16,16,16,16,16,16,
+                             17,17,17,17,17,17,17,17,17,
+                             18,18,18,
+                             19,19,19,19,19,19,19,19,19,19};
+
+static int posMyP1[cantP1] = {1,2,3,4,5,6,7,8,9,10,
+                              1,5,10,
+                              1,3,4,5,6,7,8,9,10,
+                              1,2,3,4,6,8,10,
+                              4,6,8,10,
+                              1,2,3,4,6,8,10,
+                              1,3,4,5,6,7,8,10,
+                              1,3,8,10,
+                              1,3,8,10,
+                              1,3,8,10,
+                              1,3,8,10,
+                              1,3,8,10,
+                              1,3,4,5,6,7,8,10,
+                              1,2,3,4,6,8,10,
+                              4,6,8,10,
+                              1,2,3,4,6,8,10,
+                              1,3,4,5,6,7,8,9,10,
+                              1,5,10,
+                              1,2,3,4,5,6,7,8,9,10,};
+
 static int posicionxP2[cantP2] = {64,64,64,64,64,64,64,64,64,64,
                                110,110,110,
                                156,156,156,156,156,156,156,156,156,
@@ -231,6 +273,46 @@ static int posicionyP2[cantP2] = {64,110,156,202,248,294,340,386,432,478,
                                64,110,156,202,248,294,340,386,478,
                                156,340,478,
                                64,110,156,202,248,294,340,386,432,478};
+
+static int posMxP2[cantP2] = {1,1,1,1,1,1,1,1,1,1,
+                              2,2,2,
+                              3,3,3,3,3,3,3,3,3,
+                              4,4,4,4,
+                              5,5,5,5,5,5,5,5,5,5,
+                              6,6,6,
+                              7,7,7,7,7,7,7,7,7,7,
+                              8,8,8,8,
+                              9,9,9,9,9,9,9,
+                              10,
+                              11,11,11,11,11,11,11,
+                              12,12,12,12,
+                              13,13,13,13,13,13,13,13,13,13,
+                              14,14,14,
+                              15,15,15,15,15,15,15,15,15,15,
+                              16,16,16,16,
+                              17,17,17,17,17,17,17,17,17,
+                              18,18,18,
+                              19,19,19,19,19,19,19,19,19,19};
+
+static int posMyP2[cantP2] = {1,2,3,4,5,6,7,8,9,10,
+                              3,7,10,
+                              1,2,3,4,5,6,7,8,10,
+                              3,8,9,10,
+                              1,2,3,4,5,6,7,8,9,10,
+                              3,9,10,
+                              1,2,3,4,5,6,7,8,9,10,
+                              3,6,8,10,
+                              3,4,5,6,8,9,10,
+                              3,
+                              3,4,5,6,8,9,10,
+                              3,6,8,10,
+                              1,2,3,4,5,6,7,8,9,10,
+                              3,9,10,
+                              1,2,3,4,5,6,7,8,9,10,
+                              3,8,9,10,
+                              1,2,3,4,5,6,7,8,10,
+                              3,7,10,
+                              1,2,3,4,5,6,7,8,9,10,};
 
 static int posicionxP3[cantP3] = {64,64,64,64,64,64,64,64,64,64,
                                110,110,110,110,
@@ -272,6 +354,46 @@ static int posicionyP3[cantP3] = {64,110,156,202,248,294,340,386,432,478,
                                64,202,386,478,
                                64,110,156,202,248,294,340,386,432,478};
 
+static int posMxP3[cantP3] = {1,1,1,1,1,1,1,1,1,1,
+                              2,2,2,2,
+                              3,3,3,3,3,3,
+                              4,4,4,4,4,4,4,4,
+                              5,5,
+                              6,6,6,6,6,6,6,6,6,
+                              7,7,7,7,7,
+                              8,8,8,
+                              9,9,9,
+                              10,10,
+                              11,11,11,
+                              12,12,12,
+                              13,13,13,13,13,
+                              14,14,14,14,14,14,14,14,
+                              15,15,
+                              16,16,16,16,16,16,16,16,16,
+                              17,17,17,17,17,17,
+                              18,18,18,18,
+                              19,19,19,19,19,19,19,19,19,19};
+
+static int posMyP3[cantP3] = {1,2,3,4,5,6,7,8,9,10,
+                              1,4,8,10,
+                              1,4,6,7,8,10,
+                              1,2,3,4,6,7,8,10,
+                              4,10,
+                              1,2,4,5,6,7,8,9,10,
+                              1,2,3,4,10,
+                              1,4,10,
+                              1,4,10,
+                              1,4,
+                              1,4,10,
+                              1,4,10,
+                              1,2,3,4,10,
+                              1,2,4,5,6,7,8,9,10,
+                              4,10,
+                              1,2,3,4,6,7,8,10,
+                              1,4,6,7,8,10,
+                              1,4,8,10,
+                              1,2,3,4,5,6,7,8,9,10};
+
 static int posicionxP4[cantP4] = {64,64,64,64,64,64,
                                110,110,110,
                                156,156,156,156,156,
@@ -312,6 +434,46 @@ static int posicionyP4[cantP4] = {18,64,248,432,478,524,
                                 64,248,432,
                                 18,64,248,432,478,524};
 
+static int posMxP4[cantP4] = {1,1,1,1,1,1,
+                              2,2,2,
+                              3,3,3,3,3,
+                              4,4,4,4,4,4,4,4,4,4,4,
+                              5,5,5,
+                              6,6,6,6,6,6,6,6,6,6,
+                              7,7,7,7,7,7,7,7,7,7,
+                              8,8,8,8,8,8,
+                              9,9,9,9,9,9,
+                              10,10,
+                              11,11,11,11,11,11,
+                              12,12,12,12,12,12,
+                              13,13,13,13,13,13,13,13,13,13,
+                              14,14,14,14,14,14,14,14,14,14,
+                              15,15,15,
+                              16,16,16,16,16,16,16,16,16,16,16,
+                              17,17,17,17,17,
+                              18,18,18,
+                              19,19,19,19,19,19};
+
+static int posMyP4[cantP4] = {1,2,6,10,11,12,
+                              2,6,10,
+                              2,6,10,11,12,
+                              1,2,3,4,5,6,7,8,9,10,12,
+                              6,10,12,
+                              1,2,4,5,6,7,8,9,10,12,
+                              2,4,5,6,7,8,9,10,11,12,
+                              2,3,4,9,11,12,
+                              2,3,4,9,11,12,
+                              4,12,
+                              2,3,4,9,11,12,
+                              2,3,4,9,11,12,
+                              2,4,5,6,7,8,9,10,11,12,
+                              1,2,4,5,6,7,8,9,10,12,
+                              6,10,12,
+                              1,2,3,4,5,6,7,8,9,10,12,
+                              2,6,10,11,12,
+                              2,6,10,
+                              1,2,6,10,11,11
+};
 
 static int posMx;
 static int posMy;
@@ -402,6 +564,7 @@ void juego(void){
         pastillas1[i].rec.height = 10;
         pastillas1[i].rec.x = posicionxP1[i];
         pastillas1[i].rec.y = posicionyP1[i];
+
         pastillas1[i].active = true;
     }
     for(int i = 0; i < cantP2; i++){
@@ -431,6 +594,8 @@ void juego(void){
         int num = rand()%(cantP1);
         superP1[i].rec.x = posicionxP1[num]-5;
         superP1[i].rec.y = posicionyP1[num]-5;
+        superP1[i].MxSupP = posMxP1[num];
+        superP1[i].MySupP = posMyP1[num];
         superP1[i].active = false;
     }
     for(int i = 0; i < 4; i++){
@@ -439,6 +604,8 @@ void juego(void){
         int num = rand()%(cantP2);
         superP2[i].rec.x = posicionxP2[num]-5;
         superP2[i].rec.y = posicionyP2[num]-5;
+        superP2[i].MxSupP = posMxP2[num];
+        superP2[i].MySupP = posMyP2[num];
         superP2[i].active = false;
     }
     for(int i = 0; i < 3; i++){
@@ -447,6 +614,8 @@ void juego(void){
         int num = rand()%(cantP3);
         superP3[i].rec.x = posicionxP3[num]-5;
         superP3[i].rec.y = posicionyP3[num]-5;
+        superP3[i].MxSupP = posMxP3[num];
+        superP3[i].MySupP = posMyP3[num];
         superP3[i].active = false;
     }
     for(int i = 0; i < 4; i++){
@@ -455,6 +624,8 @@ void juego(void){
         int num = rand()%(cantP4);
         superP4[i].rec.x = posicionxP4[num]-5;
         superP4[i].rec.y = posicionyP4[num]-5;
+        superP4[i].MxSupP = posMxP4[num];
+        superP4[i].MySupP = posMyP4[num];
         superP4[i].active = false;
     }
 }
@@ -855,14 +1026,29 @@ void actJuego2(void) {
                 fastest_route.clear();
                 mover.clear();
 
-                posJugx = 460;
-                posJugy = 416;
                 posMx = 10;
-                posMy = 9;
+                posMy = 10;
+                posJugx = 459;
+                posJugy = 459;
                 enemigo1.posEnex = 460;
-                enemigo1.posEney = 234;
+                enemigo1.posEney = 52;
                 enemigo1.mEnex = 10;
-                enemigo1.mEney = 5;
+                enemigo1.mEney = 1;
+            }
+            else if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
+                vidas--;
+                posMx = 10;
+                posMy = 10;
+                posJugx = 459;
+                posJugy = 459;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 52;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 1;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 52;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 1;
             }
         }
         if(pastilla){
@@ -870,11 +1056,18 @@ void actJuego2(void) {
                 fastest_route.clear();
                 mover.clear();
 
-                puntaje1 += 50;
+                puntaje2 += 50;
                 enemigo1.posEnex = 460;
-                enemigo1.posEney = 234;
+                enemigo1.posEney = 52;
                 enemigo1.mEnex = 10;
-                enemigo1.mEney = 5;
+                enemigo1.mEney = 1;
+            }
+            if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy){
+                puntaje2 += 50;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 52;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 1;
             }
         }
         //En caso de que queramos mover el pacman de manera aleatoria
@@ -985,6 +1178,90 @@ void actJuego3(void) {
             }
         }
     }
+    if(!pastilla){
+        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+            vidas--;
+            fastest_route.clear();
+            mover.clear();
+
+            posMx = 10;
+            posMy = 10;
+            posJugx = 459;
+            posJugy = 459;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 284;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+        }
+        else if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
+            vidas--;
+            posMx = 10;
+            posMy = 10;
+            posJugx = 459;
+            posJugy = 459;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 284;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 6;
+            enemigo2.posEnex = 506;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 11;
+            enemigo2.mEney = 6;
+        }
+        else if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
+            vidas--;
+            posMx = 10;
+            posMy = 10;
+            posJugx = 459;
+            posJugy = 459;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 284;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 6;
+            enemigo2.posEnex = 506;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 11;
+            enemigo2.mEney = 6;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 6;
+        }
+    }
+    if(pastilla){
+        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+            fastest_route.clear();
+            mover.clear();
+
+            puntaje3 += 50;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 284;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+        }
+        if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy){
+            puntaje3 += 50;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 6;
+        }
+        if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy){
+            puntaje3 += 50;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 6;
+        }
+    }
     if(puntaje3 == 300){
         superP3[0].active = true;
     }
@@ -1045,6 +1322,136 @@ void actJuego4(void) {
                     puntaje4 += 10;
                 }
             }
+        }
+    }
+    if(!pastilla){
+        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+            vidas--;
+            fastest_route.clear();
+            mover.clear();
+
+            posMx = 10;
+            posMy = 9;
+            posJugx = 459;
+            posJugy = 375;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 7;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 7;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
+        }
+        else if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
+            vidas--;
+            posMx = 10;
+            posMy = 9;
+            posJugx = 459;
+            posJugy = 375;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 7;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 7;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
+        }
+        else if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
+            vidas--;
+            posMx = 10;
+            posMy = 9;
+            posJugx = 459;
+            posJugy = 375;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 7;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 7;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
+        }
+        else if(enemigo4.mEnex == posMx && enemigo4.mEney == posMy) {
+            vidas--;
+            posMx = 10;
+            posMy = 9;
+            posJugx = 459;
+            posJugy = 375;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 7;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 7;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
+        }
+    }
+    if(pastilla){
+        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
+            fastest_route.clear();
+            mover.clear();
+
+            puntaje4 += 50;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 234;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+        }
+        if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy){
+            puntaje4 += 50;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 7;
+        }
+        if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy){
+            puntaje4 += 50;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 7;
+        }
+        if(enemigo4.mEnex == posMx && enemigo4.mEney == posMy){
+            puntaje4 += 50;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
         }
     }
     if(puntaje4 == 300){
@@ -1251,7 +1658,7 @@ int main() {
             case NIVEL1:
             {
                 actJuego1();
-                if(puntos1 == cantP1){
+                if(puntos1 == 1){
                     fastest_route.clear();
                     mover.clear();
                     currentScreen = NIVEL2;
@@ -1265,13 +1672,13 @@ int main() {
                     enemigo1.posEnex = 460;
                     enemigo1.posEney = 52;
                     enemigo1.mEnex = 10;
-                    enemigo1.mEney = 0;
+                    enemigo1.mEney = 1;
                     enemigo2.velene.x = 46;
                     enemigo2.velene.y = 46;
                     enemigo2.posEnex = 416;
                     enemigo2.posEney = 52;
                     enemigo2.mEnex = 9;
-                    enemigo2.mEney = 0;
+                    enemigo2.mEney = 1;
                 }
                 if(vidas == 0){
                     currentScreen = PERDER;
@@ -1280,7 +1687,7 @@ int main() {
             case NIVEL2:
             {
                 actJuego2();
-                if(puntos2 == cantP2){
+                if(puntos2 == 2){
                     currentScreen = NIVEL3;
                     posMx = 10;
                     posMy = 10;
@@ -1313,7 +1720,7 @@ int main() {
             case NIVEL3:
             {
                 actJuego3();
-                if(puntos3 == cantP3){
+                if(puntos3 == 3){
                     currentScreen = NIVEL4;
                     posMx = 10;
                     posMy = 9;
@@ -1325,25 +1732,25 @@ int main() {
                     enemigo1.posEnex = 460;
                     enemigo1.posEney = 234;
                     enemigo1.mEnex = 10;
-                    enemigo1.mEney = 5;
+                    enemigo1.mEney = 6;
                     enemigo2.velene.x = 46;
                     enemigo2.velene.y = 46;
                     enemigo2.posEnex = 416;
                     enemigo2.posEney = 284;
                     enemigo2.mEnex = 9;
-                    enemigo2.mEney = 6;
+                    enemigo2.mEney = 7;
                     enemigo3.velene.x = 46;
                     enemigo3.velene.y = 46;
                     enemigo3.posEnex = 506;
                     enemigo3.posEney = 284;
                     enemigo3.mEnex = 11;
-                    enemigo3.mEney = 6;
+                    enemigo3.mEney = 7;
                     enemigo4.velene.x = 46;
                     enemigo4.velene.y = 46;
                     enemigo4.posEnex = 460;
                     enemigo4.posEney = 284;
                     enemigo4.mEnex = 10;
-                    enemigo4.mEney = 6;
+                    enemigo4.mEney = 7;
                 }
                 if(vidas == 0){
                     currentScreen = PERDER;
