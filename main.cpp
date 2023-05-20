@@ -2742,7 +2742,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -2782,82 +2782,84 @@ void actJuego3(void) {
                 if (perselect == "4") { player = personaje4U; }
             }
         }
-        if(mencel == "1")posJugy -= jugador1.velocidad.y;
-        posMy--;
-        if (!superP3[0].active && !superP3[1].active && !superP3[2].active && !superP3[3].active &&
-            !superP3[4].active) {
-            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
-            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+        if(mencel == "1"){
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+            if (!superP3[0].active && !superP3[1].active && !superP3[2].active && !superP3[3].active &&
+                !superP3[4].active) {
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
 
-            std::pair<int, int> goal = std::make_pair(posMy, posMx);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
 
-            int rows = 12;
-            int cols = 21;
+                int rows = 12;
+                int cols = 21;
 
-            // Vector para almacenar los nodos visitados
-            std::vector<Node *> visited(rows * cols, nullptr);
-            std::vector<Node *> visited2(rows * cols, nullptr);
+                // Vector para almacenar los nodos visitados
+                std::vector<Node *> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
 
-            // Cola de prioridad para la lista abierta
-            std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
-            std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
-            std::cout << "Lista abierta:";
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
+                std::cout << "Lista abierta:";
 
-            while (!openList.empty()) {
-                Node *node = openList.top();
-                std::cout << " (" << node->x << ", " << node->y << ")";
-                openList.pop();
-            }
-            std::cout << std::endl;
-
-            std::cout << "Lista cerrada:";
-            for (const auto &node: visited) {
-                if (node != nullptr) {
+                while (!openList.empty()) {
+                    Node *node = openList.top();
                     std::cout << " (" << node->x << ", " << node->y << ")";
-                }
-            }
-            std::cout << std::endl;
-
-
-            if (!path.empty()) {
-                mover = path;
-                std::cout << "Camino encontrado:";
-                for (const auto &node: path) {
-                    std::cout << " (" << node.first << ", " << node.second << ")";
+                    openList.pop();
                 }
                 std::cout << std::endl;
-            }
-            path.clear();
-            visited.clear();
-            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
-            std::cout << "Lista abierta2:";
-            while (!openList2.empty()) {
-                Node *node = openList2.top();
-                std::cout << " (" << node->x << ", " << node->y << ")";
-                openList2.pop();
-            }
-            std::cout << std::endl;
 
-            std::cout << "Lista cerrada2:";
-            for (const auto &node: visited2) {
-                if (node != nullptr) {
-                    std::cout << " (" << node->x << ", " << node->y << ")";
-                }
-            }
-            std::cout << std::endl;
-
-            if (!path2.empty()) {
-                mover2 = path2;
-                std::cout << "Camino encontrado2:";
-                for (const auto &node: path2) {
-                    std::cout << " (" << node.first << ", " << node.second << ")";
+                std::cout << "Lista cerrada:";
+                for (const auto &node: visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
                 }
                 std::cout << std::endl;
+
+
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto &node: path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
             }
-            path2.clear();
-            visited2.clear();
         }
         if(mencel == "1"){
             if (pastilla) {player = personajecheto;}
@@ -2892,7 +2894,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -2921,7 +2923,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -2982,7 +2984,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -3011,7 +3013,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -3074,8 +3076,8 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
-                            std::cout << "Lista abierta:";
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
+                std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
                     Node *node = openList.top();
@@ -3093,24 +3095,24 @@ void actJuego3(void) {
                 std::cout << std::endl;
 
 
-                            if (!path.empty()) {
-                                mover = path;
-                                std::cout << "Camino encontrado:";
-                                for (const auto &node: path) {
-                                    std::cout << " (" << node.first << ", " << node.second << ")";
-                                }
-                                std::cout << std::endl;
-                            }
-                            path.clear();
-                            visited.clear();
-                            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
-                            std::cout << "Lista abierta2:";
-                            while (!openList2.empty()) {
-                                Node *node = openList2.top();
-                                std::cout << " (" << node->x << ", " << node->y << ")";
-                                openList2.pop();
-                            }
-                            std::cout << std::endl;
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto &node: path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
 
                 std::cout << "Lista cerrada2:";
                 for (const auto &node: visited2) {
@@ -3163,7 +3165,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -3192,7 +3194,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -3255,7 +3257,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -3284,7 +3286,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -3345,7 +3347,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -3374,7 +3376,7 @@ void actJuego3(void) {
                 }
                 path.clear();
                 visited.clear();
-                std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
                 std::cout << "Lista abierta2:";
                 while (!openList2.empty()) {
                     Node *node = openList2.top();
@@ -3446,7 +3448,7 @@ void actJuego3(void) {
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
 
-            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+            std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
             std::cout << "Lista abierta:";
             while (!openList.empty()) {
                 Node* node = openList.top();
@@ -3475,7 +3477,7 @@ void actJuego3(void) {
             visited.clear();
 
 
-            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
             std::cout << "Lista abierta2:";
             while (!openList2.empty()) {
                 Node* node = openList2.top();
@@ -3528,7 +3530,7 @@ void actJuego3(void) {
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
 
-            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+            std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
             if (!path.empty()) {
                 mover = path;
                 std::cout << "Camino encontrado1:";
@@ -3542,7 +3544,7 @@ void actJuego3(void) {
 
 
 
-            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
             if (!path2.empty()) {
                 mover2 = path2;
                 std::cout << "Camino encontrado2:";
@@ -3578,7 +3580,7 @@ void actJuego3(void) {
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
 
-            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+            std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
             if (!path.empty()) {
                 mover = path;
                 std::cout << "Camino encontrado1:";
@@ -3592,7 +3594,7 @@ void actJuego3(void) {
 
 
 
-            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
             if (!path2.empty()) {
                 mover2 = path2;
                 std::cout << "Camino encontrado2:";
@@ -3629,7 +3631,7 @@ void actJuego3(void) {
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
             std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
 
-            std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+            std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
             if (!path.empty()) {
                 mover = path;
                 std::cout << "Camino encontrado1:";
@@ -3643,7 +3645,7 @@ void actJuego3(void) {
 
 
 
-            std::vector<std::pair<int, int>> path2 = astarSearch(matriz2A, start2, goal, visited2, openList2);
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz3A, start2, goal, visited2, openList2);
             if (!path2.empty()) {
                 mover2 = path2;
                 std::cout << "Camino encontrado2:";
