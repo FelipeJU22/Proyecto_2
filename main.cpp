@@ -69,6 +69,7 @@ static bool nivel2 = false;
 static int cont1 = 0;
 static int random_number;
 static int random_number2;
+static int random_number3;
 
 const int ROWS = 12;
 const int COLS = 21;
@@ -858,7 +859,7 @@ void backtrackE1M3(int row, int col, std::vector<std::pair<int, int>>& route, in
     if (row == superP3[i].MySupP && col == superP3[i].MxSupP) {
         if (fastest_route.empty() || route.size() < fastest_route.size()) {
             fastest_route = route;
-            mover = route;
+            mover4 = route;
         }
         return;
     }
@@ -1620,8 +1621,6 @@ void actJuego1(void){
  */
 void actJuego2(void) {
     delayTimer += 0.5f;
-
-
 
     if (respawn) {
         spawnTimer += 0.5f;
@@ -2714,7 +2713,7 @@ void actJuego3(void) {
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
                 std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
-                std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
+                std::vector<std::pair<int, int>> path = astarSearch(matriz3A, start, goal, visited, openList);
                 std::cout << "Lista abierta:";
 
                 while (!openList.empty()) {
@@ -3054,44 +3053,44 @@ void actJuego3(void) {
     }
 
     if (matriz3[posMy][posMx - 1] != "#") {
-                    if (IsKeyPressed(KEY_LEFT)) {
-                        posJugx -= jugador1.velocidad.x;
-                        posMx--;
-                        if (!superP3[0].active && !superP3[1].active && !superP3[2].active && !superP3[3].active &&
-                            !superP3[4].active) {
-                            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
-                            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+        if (IsKeyPressed(KEY_LEFT)) {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+            if (!superP3[0].active && !superP3[1].active && !superP3[2].active && !superP3[3].active &&
+                !superP3[4].active) {
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
 
-                            std::pair<int, int> goal = std::make_pair(posMy, posMx);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
 
-                            int rows = 12;
-                            int cols = 21;
+                int rows = 12;
+                int cols = 21;
 
-                            // Vector para almacenar los nodos visitados
-                            std::vector<Node *> visited(rows * cols, nullptr);
-                            std::vector<Node *> visited2(rows * cols, nullptr);
+                // Vector para almacenar los nodos visitados
+                std::vector<Node *> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
 
-                            // Cola de prioridad para la lista abierta
-                            std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
-                            std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
 
                             std::vector<std::pair<int, int>> path = astarSearch(matriz2A, start, goal, visited, openList);
                             std::cout << "Lista abierta:";
 
-                            while (!openList.empty()) {
-                                Node *node = openList.top();
-                                std::cout << " (" << node->x << ", " << node->y << ")";
-                                openList.pop();
-                            }
-                            std::cout << std::endl;
+                while (!openList.empty()) {
+                    Node *node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
 
-                            std::cout << "Lista cerrada:";
-                            for (const auto &node: visited) {
-                                if (node != nullptr) {
-                                    std::cout << " (" << node->x << ", " << node->y << ")";
-                                }
-                            }
-                            std::cout << std::endl;
+                std::cout << "Lista cerrada:";
+                for (const auto &node: visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
 
 
                             if (!path.empty()) {
@@ -3113,27 +3112,27 @@ void actJuego3(void) {
                             }
                             std::cout << std::endl;
 
-                            std::cout << "Lista cerrada2:";
-                            for (const auto &node: visited2) {
-                                if (node != nullptr) {
-                                    std::cout << " (" << node->x << ", " << node->y << ")";
-                                }
-                            }
-                            std::cout << std::endl;
-
-                            if (!path2.empty()) {
-                                mover2 = path2;
-                                std::cout << "Camino encontrado2:";
-                                for (const auto &node: path2) {
-                                    std::cout << " (" << node.first << ", " << node.second << ")";
-                                }
-                                std::cout << std::endl;
-                            }
-                            path2.clear();
-                            visited2.clear();
-
-                        }
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
                     }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+        }
         if (IsKeyPressed(KEY_LEFT)) {
             if (pastilla) { player = personajecheto; }
             else {
@@ -3505,7 +3504,7 @@ void actJuego3(void) {
             visited2.clear();
 
             std::vector<std::pair<int, int>> route;
-            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
+            route.push_back(std::make_pair(enemigo3.mEney, enemigo3.mEnex));
             backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 0);
             fastest_route.clear();
             route.clear();
@@ -3555,8 +3554,8 @@ void actJuego3(void) {
             path2.clear();
             visited2.clear();
             std::vector<std::pair<int, int>> route;
-            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
-            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 0);
+            route.push_back(std::make_pair(enemigo3.mEney, enemigo3.mEnex));
+            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 1);
             fastest_route.clear();
             route.clear();
 
@@ -3606,8 +3605,8 @@ void actJuego3(void) {
             visited2.clear();
 
             std::vector<std::pair<int, int>> route;
-            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
-            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 0);
+            route.push_back(std::make_pair(enemigo3.mEney, enemigo3.mEnex));
+            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 2);
             fastest_route.clear();
             route.clear();
 
@@ -3657,8 +3656,8 @@ void actJuego3(void) {
             visited2.clear();
 
             std::vector<std::pair<int, int>> route;
-            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
-            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 0);
+            route.push_back(std::make_pair(enemigo3.mEney, enemigo3.mEnex));
+            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 3);
             fastest_route.clear();
             route.clear();
 
@@ -3708,8 +3707,8 @@ void actJuego3(void) {
             visited2.clear();
 
             std::vector<std::pair<int, int>> route;
-            route.push_back(std::make_pair(enemigo1.mEney, enemigo1.mEnex));
-            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 0);
+            route.push_back(std::make_pair(enemigo3.mEney, enemigo3.mEnex));
+            backtrackE1M3(enemigo3.mEney, enemigo3.mEnex, route, 4);
             fastest_route.clear();
             route.clear();
 
@@ -3762,6 +3761,30 @@ void actJuego3(void) {
             }
             mover2.erase(mover2.begin());
         }
+        if (!mover3.empty()) {
+
+            if (mover3[1].first < enemigo3.mEney) {
+                pacver = pacverU;
+                enemigo3.posEney -= enemigo3.velene.y;
+                enemigo3.mEney--;
+            }
+            if (mover3[1].first > enemigo3.mEney) {
+                pacver = pacverD;
+                enemigo3.posEney += enemigo3.velene.y;
+                enemigo3.mEney++;
+            }
+            if (mover3[1].second < enemigo3.mEnex) {
+                pacver = pacverL;
+                enemigo3.posEnex -= enemigo3.velene.x;
+                enemigo3.mEnex--;
+            }
+            if (mover3[1].second > enemigo3.mEnex) {
+                pacver = pacverR;
+                enemigo3.posEnex += enemigo3.velene.x;
+                enemigo3.mEnex++;
+            }
+            mover3.erase(mover3.begin());
+        }
 
         if (!pastilla) {
             if (enemigo1.mEnex == posMx && enemigo1.mEney == posMy) {
@@ -3769,7 +3792,7 @@ void actJuego3(void) {
                 fastest_route.clear();
                 mover.clear();
                 mover2.clear();
-
+                mover3.clear();
                 posMx = 10;
                 posMy = 10;
                 posJugx = 459;
@@ -3792,6 +3815,7 @@ void actJuego3(void) {
                 fastest_route.clear();
                 mover.clear();
                 mover2.clear();
+                mover3.clear();
 
                 posMx = 10;
                 posMy = 10;
@@ -3814,6 +3838,7 @@ void actJuego3(void) {
                 fastest_route.clear();
                 mover.clear();
                 mover2.clear();
+                mover3.clear();
 
                 posMx = 10;
                 posMy = 10;
@@ -3858,13 +3883,11 @@ void actJuego3(void) {
             }
             if (enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
                 fastest_route.clear();
+                mover3.clear();
+
                 puntaje2 += 50;
                 respawn3 = true;
 
-                enemigo2.posEnex = 416;
-                enemigo2.posEney = 46;
-                enemigo2.mEnex = 9;
-                enemigo2.mEney = 1;
                 enemigo3.posEnex = 506;
                 enemigo3.posEney = 284;
                 enemigo3.mEnex = 11;
@@ -3946,17 +3969,22 @@ void actJuego3(void) {
                 superP3[i].active = false;
                 mover.clear();
                 mover2.clear();
+                mover3.clear();
             }
 
             else if (enemigo1.mEney == superP3[i].MySupP && enemigo1.mEnex == superP3[i].MxSupP) {
                 superP3[i].active = false;
                 mover.clear();
                 mover2.clear();
+                mover3.clear();
+
             }
             else if (enemigo3.mEney == superP3[i].MySupP && enemigo3.mEnex == superP3[i].MxSupP) {
                 superP3[i].active = false;
                 mover.clear();
                 mover2.clear();
+                mover3.clear();
+
             }
         }
     }
@@ -3967,13 +3995,250 @@ void actJuego3(void) {
  *  al estar dentro del while el contador va a iniciar; nivel 4.
  */
 void actJuego4(void) {
+    delayTimer += 0.5f;
+    if (respawn) {
+        spawnTimer += 0.5f;
+        enemigo1.posEnex = -50;
+        enemigo1.posEney = -50;
+        enemigo1.mEnex = 0;
+        enemigo1.mEney = 0;
+        if (spawnTimer >= spawnTimerMax) {
+            respawn = false;
+            spawnTimer = 0.f;
+            enemigo1.posEnex = 460;
+            enemigo1.posEney = 284;
+            enemigo1.mEnex = 10;
+            enemigo1.mEney = 6;
+
+        }
+    }
+    if (respawn2) {
+        spawnTimer2 += 0.5f;
+        enemigo2.posEnex = -50;
+        enemigo2.posEney = -50;
+        enemigo2.mEnex = 0;
+        enemigo2.mEney = 0;
+
+        if (spawnTimer2 >= spawnTimerMax2) {
+            respawn2 = false;
+            spawnTimer2 = 0.f;
+            enemigo2.posEnex = 416;
+            enemigo2.posEney = 284;
+            enemigo2.mEnex = 9;
+            enemigo2.mEney = 6;
+
+        }
+    }
+    if (respawn3) {
+        spawnTimer3 += 0.5f;
+        enemigo3.posEnex = -50;
+        enemigo3.posEney = -50;
+        enemigo3.mEnex = 0;
+        enemigo3.mEney = 0;
+
+        if (spawnTimer3 >= spawnTimerMax3) {
+            respawn3 = false;
+            spawnTimer3 = 0.f;
+            enemigo3.posEnex = 506;
+            enemigo3.posEney = 284;
+            enemigo3.mEnex = 11;
+            enemigo3.mEney = 6;
+
+        }
+    }
+    if (respawn4) {
+        spawnTimer4 += 0.5f;
+        enemigo4.posEnex = -50;
+        enemigo4.posEney = -50;
+        enemigo4.mEnex = 0;
+        enemigo4.mEney = 0;
+
+        if (spawnTimer4 >= spawnTimerMax4) {
+            respawn4 = false;
+            spawnTimer4 = 0.f;
+            enemigo4.posEnex = 460;
+            enemigo4.posEney = 284;
+            enemigo4.mEnex = 10;
+            enemigo4.mEney = 7;
+        }
+    }
+
+
+    if (pastilla) {
+        pastillaDelay += 0.5f;
+        if (pastillaDelay >= pastillaDelayMax) {
+            pastilla = false;
+            pastillaDelay = 0.f;
+        }
+    }
+
+
     if (matriz4[posMy - 1][posMx] != "#") {
         if (IsKeyPressed(KEY_UP)) {
             posJugy -= jugador1.velocidad.y;
             posMy--;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+
         }
         if (IsKeyPressed(KEY_UP)) {
             if (pastilla) {player = personajecheto;}
+            else {
+                if (perselect == "1") { player = personaje1U; }
+                if (perselect == "2") { player = personaje2U; }
+                if (perselect == "3") { player = personaje3U; }
+                if (perselect == "4") { player = personaje4U; }
+            }
+        }
+        if (mencel == "1") {
+            posJugy -= jugador1.velocidad.y;
+            posMy--;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+
+        }
+        if (mencel == "1") {
+            if (pastilla) { player = personajecheto; }
             else {
                 if (perselect == "1") { player = personaje1U; }
                 if (perselect == "2") { player = personaje2U; }
@@ -3987,6 +4252,78 @@ void actJuego4(void) {
         if (IsKeyPressed(KEY_DOWN)) {
             posJugy += jugador1.velocidad.y;
             posMy++;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
         }
         if (IsKeyPressed(KEY_DOWN)){
             if (pastilla) {player = personajecheto;}
@@ -3997,14 +4334,258 @@ void actJuego4(void) {
                 if (perselect == "4") { player = personaje4D; }
             }
         }
+        if (mencel == "2") {
+            posJugy += jugador1.velocidad.y;
+            posMy++;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+
+        }
+        if (mencel == "2") {
+            if (pastilla) {player = personajecheto;}
+            else {
+                if (perselect == "1") { player = personaje1D; }
+                if (perselect == "2") { player = personaje2D; }
+                if (perselect == "3") { player = personaje3D; }
+                if (perselect == "4") { player = personaje4D; }
+            }
+        };
     }
 
     if (matriz4[posMy][posMx - 1] != "#") {
         if (IsKeyPressed(KEY_LEFT)) {
             posJugx -= jugador1.velocidad.x;
             posMx--;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+
         }
         if (IsKeyPressed(KEY_LEFT)) {
+            if (pastilla) {player = personajecheto;}
+            else {
+                if (perselect == "1") { player = personaje1L; }
+                if (perselect == "2") { player = personaje2L; }
+                if (perselect == "3") { player = personaje3L; }
+                if (perselect == "4") { player = personaje4L; }
+            }
+        }
+        if (mencel == "3") {
+            posJugx -= jugador1.velocidad.x;
+            posMx--;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+        }
+        if (mencel == "3") {
             if (pastilla) {player = personajecheto;}
             else {
                 if (perselect == "1") { player = personaje1L; }
@@ -4019,8 +4600,165 @@ void actJuego4(void) {
         if (IsKeyPressed(KEY_RIGHT)) {
             posJugx += jugador1.velocidad.x;
             posMx++;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
         }
         if (IsKeyPressed(KEY_RIGHT)) {
+            if (pastilla) {player = personajecheto;}
+            else {
+                if (perselect == "1") { player = personaje1R; }
+                if (perselect == "2") { player = personaje2R; }
+                if (perselect == "3") { player = personaje3R; }
+                if (perselect == "4") { player = personaje4R; }
+            }
+        }
+        if (mencel == "4") {
+            posJugx += jugador1.velocidad.x;
+            posMx++;
+            if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active && !superP4[5].active){
+                std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+                std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+                std::pair<int, int> goal = std::make_pair(posMy, posMx);
+
+                int rows = 14;
+                int cols = 21;
+
+                // Vector para almacenar los nodos visitados
+                std::vector<Node*> visited(rows * cols, nullptr);
+                std::vector<Node *> visited2(rows * cols, nullptr);
+
+                // Cola de prioridad para la lista abierta
+                std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+                std::priority_queue<Node *, std::vector<Node *>, CompareNode> openList2;
+
+                std::cout << "Lista abierta:";
+
+                while (!openList.empty()) {
+                    Node* node = openList.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada:";
+                for (const auto& node : visited) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+                std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+                if (!path.empty()) {
+                    mover = path;
+                    std::cout << "Camino encontrado:";
+                    for (const auto& node : path) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path.clear();
+                visited.clear();
+                std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+                std::cout << "Lista abierta2:";
+                while (!openList2.empty()) {
+                    Node *node = openList2.top();
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                    openList2.pop();
+                }
+                std::cout << std::endl;
+
+                std::cout << "Lista cerrada2:";
+                for (const auto &node: visited2) {
+                    if (node != nullptr) {
+                        std::cout << " (" << node->x << ", " << node->y << ")";
+                    }
+                }
+                std::cout << std::endl;
+
+                if (!path2.empty()) {
+                    mover2 = path2;
+                    std::cout << "Camino encontrado2:";
+                    for (const auto &node: path2) {
+                        std::cout << " (" << node.first << ", " << node.second << ")";
+                    }
+                    std::cout << std::endl;
+                }
+                path2.clear();
+                visited2.clear();
+
+            }
+        }
+        if (mencel == "4") {
             if (pastilla) {player = personajecheto;}
             else {
                 if (perselect == "1") { player = personaje1R; }
@@ -4041,135 +4779,1229 @@ void actJuego4(void) {
             }
         }
     }
-    if(!pastilla){
-        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
-            vidas--;
-            fastest_route.clear();
-            mover.clear();
 
-            posMx = 10;
-            posMy = 9;
-            posJugx = 459;
-            posJugy = 375;
-            enemigo1.posEnex = 460;
-            enemigo1.posEney = 234;
-            enemigo1.mEnex = 10;
-            enemigo1.mEney = 6;
-            enemigo2.posEnex = 416;
-            enemigo2.posEney = 284;
-            enemigo2.mEnex = 9;
-            enemigo2.mEney = 7;
-            enemigo3.posEnex = 506;
-            enemigo3.posEney = 284;
-            enemigo3.mEnex = 11;
-            enemigo3.mEney = 7;
-            enemigo4.posEnex = 460;
-            enemigo4.posEney = 284;
-            enemigo4.mEnex = 10;
-            enemigo4.mEney = 7;
-        }
-        else if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
-            vidas--;
-            posMx = 10;
-            posMy = 9;
-            posJugx = 459;
-            posJugy = 375;
-            enemigo1.posEnex = 460;
-            enemigo1.posEney = 234;
-            enemigo1.mEnex = 10;
-            enemigo1.mEney = 6;
-            enemigo2.posEnex = 416;
-            enemigo2.posEney = 284;
-            enemigo2.mEnex = 9;
-            enemigo2.mEney = 7;
-            enemigo3.posEnex = 506;
-            enemigo3.posEney = 284;
-            enemigo3.mEnex = 11;
-            enemigo3.mEney = 7;
-            enemigo4.posEnex = 460;
-            enemigo4.posEney = 284;
-            enemigo4.mEnex = 10;
-            enemigo4.mEney = 7;
-        }
-        else if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
-            vidas--;
-            posMx = 10;
-            posMy = 9;
-            posJugx = 459;
-            posJugy = 375;
-            enemigo1.posEnex = 460;
-            enemigo1.posEney = 234;
-            enemigo1.mEnex = 10;
-            enemigo1.mEney = 6;
-            enemigo2.posEnex = 416;
-            enemigo2.posEney = 284;
-            enemigo2.mEnex = 9;
-            enemigo2.mEney = 7;
-            enemigo3.posEnex = 506;
-            enemigo3.posEney = 284;
-            enemigo3.mEnex = 11;
-            enemigo3.mEney = 7;
-            enemigo4.posEnex = 460;
-            enemigo4.posEney = 284;
-            enemigo4.mEnex = 10;
-            enemigo4.mEney = 7;
-        }
-        else if(enemigo4.mEnex == posMx && enemigo4.mEney == posMy) {
-            vidas--;
-            posMx = 10;
-            posMy = 9;
-            posJugx = 459;
-            posJugy = 375;
-            enemigo1.posEnex = 460;
-            enemigo1.posEney = 234;
-            enemigo1.mEnex = 10;
-            enemigo1.mEney = 6;
-            enemigo2.posEnex = 416;
-            enemigo2.posEney = 284;
-            enemigo2.mEnex = 9;
-            enemigo2.mEney = 7;
-            enemigo3.posEnex = 506;
-            enemigo3.posEney = 284;
-            enemigo3.mEnex = 11;
-            enemigo3.mEney = 7;
-            enemigo4.posEnex = 460;
-            enemigo4.posEney = 284;
-            enemigo4.mEnex = 10;
-            enemigo4.mEney = 7;
-        }
-    }
-    if(pastilla){
-        if(enemigo1.mEnex == posMx && enemigo1.mEney == posMy){
-            fastest_route.clear();
-            mover.clear();
 
-            puntaje4 += 50;
-            enemigo1.posEnex = 460;
-            enemigo1.posEney = 234;
-            enemigo1.mEnex = 10;
-            enemigo1.mEney = 6;
+    if (delayTimer >= delayTimerMax) {
+        if (superP4[0].active && p0) {
+            p0 = false;
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[0].MySupP, superP4[0].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
         }
-        if(enemigo2.mEnex == posMx && enemigo2.mEney == posMy){
-            puntaje4 += 50;
-            enemigo2.posEnex = 416;
-            enemigo2.posEney = 284;
-            enemigo2.mEnex = 9;
-            enemigo2.mEney = 7;
+        if (superP4[1].active && p1) {
+            p1 = false;
+
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[1].MySupP, superP4[1].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
+
         }
-        if(enemigo3.mEnex == posMx && enemigo3.mEney == posMy){
-            puntaje4 += 50;
-            enemigo3.posEnex = 506;
-            enemigo3.posEney = 284;
-            enemigo3.mEnex = 11;
-            enemigo3.mEney = 7;
+        if (superP4[2].active && p2) {
+            p2 = false;
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[2].MySupP, superP4[2].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
+
         }
-        if(enemigo4.mEnex == posMx && enemigo4.mEney == posMy){
-            puntaje4 += 50;
-            enemigo4.posEnex = 460;
-            enemigo4.posEney = 284;
-            enemigo4.mEnex = 10;
-            enemigo4.mEney = 7;
+        if (superP4[3].active && p3) {
+            p3 = false;
+
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[3].MySupP, superP4[3].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
+
         }
+        if (superP4[4].active && p4) {
+            p4 = false;
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[4].MySupP, superP4[4].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
+        }
+        if (superP4[5].active && p5) {
+            p5 = false;
+
+            std::pair<int, int> start = std::make_pair(enemigo1.mEney, enemigo1.mEnex);
+            std::pair<int, int> start2 = std::make_pair(enemigo2.mEney, enemigo2.mEnex);
+            std::pair<int, int> start3 = std::make_pair(enemigo3.mEney, enemigo3.mEnex);
+            std::pair<int, int> start4 = std::make_pair(enemigo4.mEney, enemigo4.mEnex);
+
+            std::pair<int, int> goal = std::make_pair(superP4[5].MySupP, superP4[5].MxSupP);
+
+            int rows = 14;
+            int cols = 21;
+
+            // Vector para almacenar los nodos visitados
+            std::vector<Node*> visited(rows * cols, nullptr);
+            std::vector<Node*> visited2(rows * cols, nullptr);
+            std::vector<Node*> visited3(rows * cols, nullptr);
+            std::vector<Node*> visited4(rows * cols, nullptr);
+
+            // Cola de prioridad para la lista abierta
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList2;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList3;
+            std::priority_queue<Node*, std::vector<Node*>, CompareNode> openList4;
+
+            std::vector<std::pair<int, int>> path = astarSearch(matriz4A, start, goal, visited, openList);
+            std::cout << "Lista abierta:";
+            while (!openList.empty()) {
+                Node* node = openList.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada:";
+            for (const auto& node : visited) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path.empty()) {
+                mover = path;
+                std::cout << "Camino encontrado1:";
+                for (const auto& node : path) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path.clear();
+            visited.clear();
+
+
+            std::vector<std::pair<int, int>> path2 = astarSearch(matriz4A, start2, goal, visited2, openList2);
+            std::cout << "Lista abierta2:";
+            while (!openList2.empty()) {
+                Node* node = openList2.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList2.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada2:";
+            for (const auto& node : visited2) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path2.empty()) {
+                mover2 = path2;
+                std::cout << "Camino encontrado2:";
+                for (const auto& node : path2) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path2.clear();
+            visited2.clear();
+
+
+            std::vector<std::pair<int, int>> path3 = astarSearch(matriz4A, start3, goal, visited3, openList3);
+            std::cout << "Lista abierta3:";
+            while (!openList3.empty()) {
+                Node* node = openList3.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList3.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada3:";
+            for (const auto& node : visited3) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path3.empty()) {
+                mover3 = path3;
+                std::cout << "Camino encontrado3:";
+                for (const auto& node : path3) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path3.clear();
+            visited3.clear();
+
+            std::vector<std::pair<int, int>> path4 = astarSearch(matriz4A, start4, goal, visited4, openList4);
+            std::cout << "Lista abierta4:";
+            while (!openList4.empty()) {
+                Node* node = openList4.top();
+                std::cout << " (" << node->x << ", " << node->y << ")";
+                openList4.pop();
+            }
+            std::cout << std::endl;
+
+            std::cout << "Lista cerrada4:";
+            for (const auto& node : visited4) {
+                if (node != nullptr) {
+                    std::cout << " (" << node->x << ", " << node->y << ")";
+                }
+            }
+            std::cout << std::endl;
+
+            if (!path4.empty()) {
+                mover4 = path4;
+                std::cout << "Camino encontrado4:";
+                for (const auto& node : path4) {
+                    std::cout << " (" << node.first << ", " << node.second << ")";
+                }
+                std::cout << std::endl;
+            }
+            path4.clear();
+            visited4.clear();
+        }
+
+        if (!mover.empty()) {
+            if (mover[1].first < enemigo1.mEney) {
+                pacama = pacamaU;
+                enemigo1.posEney -= enemigo1.velene.y;
+                enemigo1.mEney--;
+            }
+            if (mover[1].first > enemigo1.mEney) {
+                pacama = pacamaD;
+                enemigo1.posEney += enemigo1.velene.y;
+                enemigo1.mEney++;
+            }
+            if (mover[1].second < enemigo1.mEnex) {
+                pacama = pacamaL;
+                enemigo1.posEnex -= enemigo1.velene.x;
+                enemigo1.mEnex--;
+            }
+            if (mover[1].second > enemigo1.mEnex) {
+                pacama = pacamaR;
+                enemigo1.posEnex += enemigo1.velene.x;
+                enemigo1.mEnex++;
+            }
+            mover.erase(mover.begin());
+        }
+        if (!mover2.empty()) {
+
+            if (mover2[1].first < enemigo2.mEney) {
+                pacbla = pacblaU;
+                enemigo2.posEney -= enemigo2.velene.y;
+                enemigo2.mEney--;
+            }
+            if (mover2[1].first > enemigo2.mEney) {
+                pacbla = pacblaD;
+                enemigo2.posEney += enemigo2.velene.y;
+                enemigo2.mEney++;
+            }
+            if (mover2[1].second < enemigo2.mEnex) {
+                pacbla = pacblaL;
+                enemigo2.posEnex -= enemigo2.velene.x;
+                enemigo2.mEnex--;
+            }
+            if (mover2[1].second > enemigo2.mEnex) {
+                pacbla = pacblaR;
+                enemigo2.posEnex += enemigo2.velene.x;
+                enemigo2.mEnex++;
+            }
+            mover2.erase(mover2.begin());
+        }
+        if (!mover3.empty()) {
+
+            if (mover3[1].first < enemigo3.mEney) {
+                pacver = pacverU;
+                enemigo3.posEney -= enemigo3.velene.y;
+                enemigo3.mEney--;
+            }
+            if (mover3[1].first > enemigo3.mEney) {
+                pacver = pacverD;
+                enemigo3.posEney += enemigo3.velene.y;
+                enemigo3.mEney++;
+            }
+            if (mover3[1].second < enemigo3.mEnex) {
+                pacver = pacverL;
+                enemigo3.posEnex -= enemigo3.velene.x;
+                enemigo3.mEnex--;
+            }
+            if (mover3[1].second > enemigo3.mEnex) {
+                pacver = pacverR;
+                enemigo3.posEnex += enemigo3.velene.x;
+                enemigo3.mEnex++;
+            }
+            mover3.erase(mover3.begin());
+        }
+        if (!mover4.empty()) {
+
+            if (mover4[1].first < enemigo4.mEney) {
+                pacmor = pacmorU;
+                enemigo4.posEney -= enemigo4.velene.y;
+                enemigo4.mEney--;
+            }
+            if (mover4[1].first > enemigo4.mEney) {
+                pacmor = pacmorD;
+                enemigo4.posEney += enemigo4.velene.y;
+                enemigo4.mEney++;
+            }
+            if (mover4[1].second < enemigo4.mEnex) {
+                pacmor = pacmorL;
+                enemigo4.posEnex -= enemigo4.velene.x;
+                enemigo4.mEnex--;
+            }
+            if (mover4[1].second > enemigo4.mEnex) {
+                pacmor = pacmorR;
+                enemigo4.posEnex += enemigo4.velene.x;
+                enemigo4.mEnex++;
+            }
+            mover4.erase(mover4.begin());
+        }
+
+
+
+
+        if (!pastilla) {
+            if (enemigo1.mEnex == posMx && enemigo1.mEney == posMy) {
+                vidas--;
+                fastest_route.clear();
+                fastest_route2.clear();
+
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+                posMx = 10;
+                posMy = 9;
+                posJugx = 459;
+                posJugy = 375;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 6;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 284;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 7;
+                enemigo3.posEnex = 506;
+                enemigo3.posEney = 284;
+                enemigo3.mEnex = 11;
+                enemigo3.mEney = 7;
+                enemigo4.posEnex = 460;
+                enemigo4.posEney = 284;
+                enemigo4.mEnex = 10;
+                enemigo4.mEney = 7;
+            } else if (enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
+                vidas--;
+                fastest_route.clear();
+                fastest_route2.clear();
+
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+                posMx = 10;
+                posMy = 9;
+                posJugx = 459;
+                posJugy = 375;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 6;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 284;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 7;
+                enemigo3.posEnex = 506;
+                enemigo3.posEney = 284;
+                enemigo3.mEnex = 11;
+                enemigo3.mEney = 7;
+                enemigo4.posEnex = 460;
+                enemigo4.posEney = 284;
+                enemigo4.mEnex = 10;
+                enemigo4.mEney = 7;
+            } else if (enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
+                vidas--;
+                fastest_route.clear();
+                fastest_route2.clear();
+
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+                posMx = 10;
+                posMy = 9;
+                posJugx = 459;
+                posJugy = 375;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 6;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 284;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 7;
+                enemigo3.posEnex = 506;
+                enemigo3.posEney = 284;
+                enemigo3.mEnex = 11;
+                enemigo3.mEney = 7;
+                enemigo4.posEnex = 460;
+                enemigo4.posEney = 284;
+                enemigo4.mEnex = 10;
+                enemigo4.mEney = 7;
+            } else if (enemigo4.mEnex == posMx && enemigo4.mEney == posMy) {
+                vidas--;
+                fastest_route.clear();
+                fastest_route2.clear();
+
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+                posMx = 10;
+                posMy = 9;
+                posJugx = 459;
+                posJugy = 375;
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 6;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 284;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 7;
+                enemigo3.posEnex = 506;
+                enemigo3.posEney = 284;
+                enemigo3.mEnex = 11;
+                enemigo3.mEney = 7;
+                enemigo4.posEnex = 460;
+                enemigo4.posEney = 284;
+                enemigo4.mEnex = 10;
+                enemigo4.mEney = 7;
+            }
+        }
+        if (pastilla) {
+            if (enemigo1.mEnex == posMx && enemigo1.mEney == posMy) {
+                fastest_route.clear();
+                mover.clear();
+                respawn = true;
+
+                puntaje4 += 50;
+
+                enemigo1.posEnex = 460;
+                enemigo1.posEney = 234;
+                enemigo1.mEnex = 10;
+                enemigo1.mEney = 6;
+            }
+            if (enemigo2.mEnex == posMx && enemigo2.mEney == posMy) {
+                fastest_route.clear();
+                mover2.clear();
+                respawn2 = true;
+
+                puntaje4 += 50;
+                enemigo2.posEnex = 416;
+                enemigo2.posEney = 284;
+                enemigo2.mEnex = 9;
+                enemigo2.mEney = 7;
+            }
+            if (enemigo3.mEnex == posMx && enemigo3.mEney == posMy) {
+                fastest_route.clear();
+                mover3.clear();
+                respawn3 = true;
+
+                puntaje4 += 50;
+                enemigo3.posEnex = 506;
+                enemigo3.posEney = 284;
+                enemigo3.mEnex = 11;
+                enemigo3.mEney = 7;
+            }
+            if (enemigo4.mEnex == posMx && enemigo4.mEney == posMy) {
+                fastest_route.clear();
+                mover4.clear();
+                respawn4 = true;
+
+                puntaje4 += 50;
+                enemigo4.posEnex = 460;
+                enemigo4.posEney = 284;
+                enemigo4.mEnex = 10;
+                enemigo4.mEney = 7;
+            }
+        }
+        //En caso de que queramos mover el pacman de manera aleatoria
+
+        if (!superP4[0].active && !superP4[1].active && !superP4[2].active && !superP4[3].active&& !superP4[4].active&& !superP4[5].active){
+            if (random_number == 0) {
+                if (matriz4[enemigo3.mEney - 1][enemigo3.mEnex] != "#") {
+                    pacver = pacverU;
+                    enemigo3.posEney -= enemigo3.velene.y;
+                    enemigo3.mEney--;
+                } else {
+                    random_number = rand() % 4;
+                }
+            }
+            if (random_number == 1) {
+                if (matriz4[enemigo3.mEney + 1][enemigo3.mEnex] != "#") {
+                    pacver = pacverD;
+                    enemigo3.posEney += enemigo3.velene.y;
+                    enemigo3.mEney++;
+                } else {
+                    random_number = rand() % 4;
+                }
+            }
+            if (random_number == 2) {
+                if (matriz4[enemigo3.mEney][enemigo3.mEnex - 1] != "#") {
+                    pacver = pacverL;
+                    enemigo3.posEnex -= enemigo2.velene.x;
+                    enemigo3.mEnex--;
+                } else {
+                    random_number = rand() % 4;
+                }
+            }
+            if (random_number == 3) {
+                if (matriz4[enemigo3.mEney][enemigo3.mEnex + 1] != "#") {
+                    pacver = pacverR;
+                    enemigo3.posEnex += enemigo3.velene.x;
+                    enemigo3.mEnex++;
+                } else {
+                    random_number = rand() % 4;
+                }
+            }
+            if (random_number2 == 0) {
+                if (matriz4[enemigo4.mEney - 1][enemigo4.mEnex] != "#") {
+                    pacmor = pacmorU;
+                    enemigo4.posEney -= enemigo4.velene.y;
+                    enemigo4.mEney--;
+                } else {
+                    random_number2 = rand() % 4;
+                }
+            }
+            if (random_number2 == 1) {
+                if (matriz4[enemigo4.mEney + 1][enemigo4.mEnex] != "#") {
+                    pacmor = pacmorD;
+                    enemigo4.posEney += enemigo4.velene.y;
+                    enemigo4.mEney++;
+                } else {
+                    random_number2 = rand() % 4;
+                }
+            }
+            if (random_number2 == 2) {
+                if (matriz4[enemigo4.mEney][enemigo4.mEnex - 1] != "#") {
+                    pacmor = pacmorL;
+                    enemigo4.posEnex -= enemigo4.velene.x;
+                    enemigo4.mEnex--;
+                } else {
+                    random_number2 = rand() % 4;
+                }
+            }
+            if (random_number2 == 3) {
+                if (matriz4[enemigo4.mEney][enemigo4.mEnex + 1] != "#") {
+                    pacmor = pacmorR;
+                    enemigo4.posEnex += enemigo4.velene.x;
+                    enemigo4.mEnex++;
+                } else {
+                    random_number2 = rand() % 4;
+                }
+            }
+            if (random_number3 == 0) {
+                if (matriz4[enemigo2.mEney - 1][enemigo2.mEnex] != "#") {
+                    pacbla = pacblaU;
+                    enemigo2.posEney -= enemigo2.velene.y;
+                    enemigo2.mEney--;
+                } else {
+                    random_number3 = rand() % 4;
+                }
+            }
+            if (random_number3 == 1) {
+                if (matriz4[enemigo2.mEney + 1][enemigo2.mEnex] != "#") {
+                    pacbla = pacblaD;
+                    enemigo2.posEney += enemigo2.velene.y;
+                    enemigo2.mEney++;
+                } else {
+                    random_number3 = rand() % 4;
+                }
+            }
+            if (random_number3 == 2) {
+                if (matriz4[enemigo2.mEney][enemigo2.mEnex - 1] != "#") {
+                    pacbla = pacblaL;
+                    enemigo2.posEnex -= enemigo2.velene.x;
+                    enemigo2.mEnex--;
+                } else {
+                    random_number3 = rand() % 4;
+                }
+            }
+            if (random_number3 == 3) {
+                if (matriz4[enemigo2.mEney][enemigo2.mEnex + 1] != "#") {
+                    pacbla = pacblaR;
+                    enemigo2.posEnex += enemigo2.velene.x;
+                    enemigo2.mEnex++;
+                } else {
+                    random_number3 = rand() % 4;
+                }
+            }
+
+        }
+
+        delayTimer = 0.f;
+
     }
     if(puntaje4 == 200){
         superP4[0].active = true;
@@ -4191,11 +6023,47 @@ void actJuego4(void) {
     }
     for(int i = 0; i < 6; i++){
         if(superP4[i].active) {
-            if (abs(posJugx + 23 - superP4[i].rec.x) < 23) {
-                if (abs(posJugy + 23 - superP4[i].rec.y) < 23) {
-                    superP4[i].active = false;
-                }
+            //cout << "Posicion enemigo: "<< enemigo2.mEnex<<"," <<enemigo2.mEney << endl;
+
+            //cout << "Posicion pastilla: "<< superP2[i].MxSupP<<"," <<superP2[i].MySupP << endl;
+            if (posMy == superP4[i].MySupP && posMx == superP4[i].MxSupP) {
+                superP4[i].active = false;
+                pastilla = true;
+                cout << "Pastilla activada" << endl;
             }
+            else if (enemigo2.mEney == superP4[i].MySupP && enemigo2.mEnex == superP4[i].MxSupP) {
+                superP4[i].active = false;
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+            }
+
+            else if (enemigo1.mEney == superP4[i].MySupP && enemigo1.mEnex == superP4[i].MxSupP) {
+                superP4[i].active = false;
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+            }
+            else if (enemigo3.mEney == superP4[i].MySupP && enemigo3.mEnex == superP4[i].MxSupP) {
+                superP4[i].active = false;
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+            }
+            else if (enemigo4.mEney == superP4[i].MySupP && enemigo4.mEnex == superP4[i].MxSupP) {
+                superP4[i].active = false;
+                mover.clear();
+                mover2.clear();
+                mover3.clear();
+                mover4.clear();
+
+            }
+
         }
     }
 }
@@ -4269,6 +6137,7 @@ int main() {
     srand(time(0));
     random_number = rand() % 4;
     random_number2 = rand() % 4;
+    random_number3 = rand() % 4;
 
     const int screenWidth = 960;
     const int screenHeight = 540;
@@ -4521,7 +6390,7 @@ int main() {
             case NIVEL3:
             {
                 actJuego3();
-                if(puntos3 == cantP3){
+                if(puntos3 == 1){
                     p0 = true;
                     p1 = true;
                     p2 = true;
