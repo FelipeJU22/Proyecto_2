@@ -6119,7 +6119,7 @@ void celular() {
  * @return
  */
 int main() {
-/*
+
     boost::asio::io_context io_context;
     boost::asio::ip::tcp::acceptor acceptor(io_context,
                                             boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("192.168.100.213"), 5001));
@@ -6134,7 +6134,7 @@ int main() {
     boost::asio::streambuf buffer;
     boost::system::error_code error;
     boost::asio::write(socket, boost::asio::buffer("hola\n"));
-*/
+
 
     srand(time(0));
     random_number = rand() % 4;
@@ -6228,7 +6228,7 @@ int main() {
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-/*
+
         if (socket.available() > 0) {
             boost::asio::read_until(socket, buffer, "\n", error);
 
@@ -6252,7 +6252,7 @@ int main() {
 
             buffer.consume(buffer.size());
         }
-*/
+
 
 
         // Update
@@ -6312,7 +6312,7 @@ int main() {
             {
                 actJuego1();
 
-                if(puntos1 == 1){
+                if(puntos1 == cantP1){
                      p0 = true;
                      p1 = true;
                      p2 = true;
@@ -6349,7 +6349,7 @@ int main() {
             case NIVEL2:
             {
                 actJuego2();
-                if(puntos2 == 1){
+                if(puntos2 == cantP2){
                     p0 = true;
                     p1 = true;
                     p2 = true;
@@ -6392,7 +6392,7 @@ int main() {
             case NIVEL3:
             {
                 actJuego3();
-                if(puntos3 == 1){
+                if(puntos3 == cantP3){
                     p0 = true;
                     p1 = true;
                     p2 = true;

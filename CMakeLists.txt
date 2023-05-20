@@ -5,9 +5,9 @@ project(Proyecto_2)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 # Dependencies
-set(RAYLIB_VERSION 4.2.0)
+set(RAYLIB_VERSION 4.2.0)   
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
 
 
